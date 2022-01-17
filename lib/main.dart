@@ -541,7 +541,6 @@ class _ParticipantScreenState extends State<ParticipantScreen> {
                   }));
 
       this.setState(() {
-        this._data0 = dataObj ;
         this._data1.addAll(dataObj);
         int l = this._data0.length;
         if (l > 7) {
