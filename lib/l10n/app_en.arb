@@ -1,0 +1,127 @@
+{
+  "acceptButtonText": "OK",
+  "@acceptButtonText": {
+    "description":"Self explanatory"
+   },
+  "addDataNotePrompt": "Enter data note",
+  "@addDataNotePrompt": {
+    "description": "Prompt for adding data note in a text form field"
+  },
+  "addDataNoteHelpText": "To add a data note, enter text in the form field, then press '{button}'",
+  "@addDataNoteHelpText": {
+    "description": "Help text for adding data not in a text form field",
+    "placeholders": {
+      "button": {}
+    }
+  },
+  "addDataNoteScreenTitle": "Whedcapp - Add data note",
+  "@addDataNoteScreenTitle": {
+    "description": "The title of the screen for adding data notes"
+  },
+  "addValueScreenTitle": "Whedcapp - Add data value at {date}",
+  "@addValueScreenTitle": {
+    "description": "The title for the add value screen",
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "cancelButtonText": "Cancel",
+  "@cancelButtonText": {
+    "description": "Self-explanatory"
+  },
+  "configurationSelectLanguagePrompt": "Select interface language",
+  "@configurationSelectLanguagePrompt": {
+    "description": "Prompt for selecting interface language"
+  },
+  "configurationSelectContentLanguagePrompt": "Select content language",
+  "@configurationSelectLanguagePrompt": {
+    "description": "Prompt for selecting content language"
+  },
+  "configurationTitle": "Whedcapp configuration",
+  "@configurationTitle": {
+    "description": "The title of the configuration screen"
+  },
+  "editDataNoteScreenTitle": "Whedcapp - Edit notes concerning data",
+  "@editDataNoteScreenTitle":  {
+    "description": "The title of the screen for editing notes with respect to data items"
+  },
+  "enterValueQuestion": "How would you rate your sense of \"{series}\" on a scale 1 (really bad) to 10 (really good)?",
+  "@enterValueQuestion": {
+    "description": "The question for entering values",
+    "placeholders": {
+      "series": {}
+    }
+
+  },
+  "enterValueQuestionSenseOfHome": "How would you rate your sense of \"feeling at home\" on a scale 1 to 10?",
+  "@enterValueQuestionSensOfHome": {
+    "description": "Sense of home"
+  },
+  "enterValueQuestionWellBeing": "How would you rate your \"sense of well-being\" on a scale 1 to 10?",
+  "@enterValueQuestionWellBeing": {
+    "description": "Sense of home"
+  },
+  "loginTitle": "Whedcapp demo",
+  "@loginTitle": {
+    "description": "The title of the login screen"
+  },
+  "loginIdentityPrompt": "Enter identity",
+  "@loginIdentityPrompt": {
+    "description": "The prompt for asking the user of what identity to use"
+  },
+  "loginIdentityHelperText": "Enter a valid email address",
+  "@loginIdentityHelperText": {
+    "description": "The additional explanation for the type of answer that is expected as an identity"
+  },
+  "loginIdentityValidatorErrorMsg": "Enter a valid email address",
+  "@loginIdentityValidatorErrorMsg": {
+    "description": "An error message that is returned in case the user does something odd"
+  },
+  "loginPasswordPrompt": "Enter password",
+  "@loginPasswordPrompt": {
+    "description": "The prompt for asking the user what password to use"
+  },
+  "loginPasswordHelperText": "Enter a password",
+  "@loginPasswordHelperText": {
+    "description": "At least 12 characters"
+  },
+  "loginPasswordValidatorErrorMsg": "Password must be longer than 12 characters.",
+  "@loginPasswordValidatorErrorMsg": {
+    "description": "An error message that is returned in case the user do not follow the rules."
+  },
+  "loginFailedMsg": "Login for {name} failed",
+  "@loginFailedMsg": {
+    "description": "Error message for failed login",
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "loginProcessingMsg": "Logging is as {name}",
+  "@loginProcessingMsg": {
+    "description": "Notifying the user that login processing is happening",
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "partScreenTitle": "Whedcapp - Participant",
+  "@partScreenTitle": {
+    "description": "Title of participant screen."
+  },
+  "seriesWellbeing": "Well-being",
+  "@seriesWellbeing": {
+    "description": "Name of the well-being series"
+  },
+  "seriesSenseOfHome": "Feeling at home",
+  "@seriesSenseOfHome": {
+    "description": "Name of the sense of home series"
+  },
+  "seriesSafety": "Safety",
+  "@seriesSafety": {
+    "description": "Name of the safety series"
+  },
+  "seriesLoneliness": "Loneliness",
+  "@seriesLoneliness": {
+    "description": "Name of the loneliness series"
+  }
+
+}
