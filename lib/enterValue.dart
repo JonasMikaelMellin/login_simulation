@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
-import 'package:login_simulation/catharinasRadionButton.dart';
+import 'package:login_simulation/common/catharinasRadionButton.dart';
 import 'package:provider/provider.dart';
 
 import 'data.dart';
