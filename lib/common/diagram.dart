@@ -5,9 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_echarts/flutter_echarts.dart';
 import 'package:provider/provider.dart';
 
-import 'data.dart';
-import 'dataSpecification.dart';
-import 'editDataNotes.dart';
+import '../data.dart';
+import '../dataSpecification.dart';
+import '../editDataNotes.dart';
 
 class DiagramArgs {
   final List<Data> dataList;

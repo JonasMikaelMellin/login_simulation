@@ -7,12 +7,15 @@ import 'package:flutter_echarts/flutter_echarts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:login_simulation/admin/adminDemoMgmtScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'admin/adminDatabaseMgmtScreen.dart';
+import 'admin/adminScreen.dart';
 import 'data.dart';
 import 'dataSpecification.dart';
-import 'diagram.dart';
+import 'common/diagram.dart';
 import 'editDataNotes.dart';
 import 'enterValue.dart';
 import 'navDrawer.dart';
@@ -81,7 +84,7 @@ class Auth {
         alias: 'part@w.o', password: 'papassword', roles: [Role.participant]),
     'adm@w.o': User(
         alias: 'adm@w.o',
-        password: 'adpassword',
+        password: '991b7e64f7f4a49d9b15e92d255effcde73626b730971cb83c93824dce7bd868efa56cfcc566c8a26c3b28c84eea4868b1506b18057860b4b4c6039c9e8893b6',
         roles: [Role.administrator, Role.projectOwner]),
     'proj@w.o': User(
         alias: 'proj@w.o', password: 'prpassword', roles: [Role.projectOwner]),
@@ -199,7 +202,10 @@ class _MyAppState extends State<MyApp> {
         EnterValue.routeName(Series.Safety): (context) => EnterValue(),
         EnterValue.routeName(Series.Wellbeing): (context) => EnterValue(),
         EnterValue.routeName(Series.SenseOfHome): (context) => EnterValue(),
-        EnterValue.subsequentRouteName: (context) => EnterValue()
+        EnterValue.subsequentRouteName: (context) => EnterValue(),
+        AdminScreen.route: (context) => AdminScreen(),
+        AdminDatabaseMgmtScreen.route: (context) => AdminDatabaseMgmtScreen(),
+        AdminDemoMgmtScreen.route: (context) => AdminDemoMgmtScreen()
       },
       theme: ThemeData(
           // This is the theme of your application.
@@ -451,28 +457,8 @@ class _ConfigStateState extends State<ConfigState> {
 }
 
 
-class AdminScreen extends StatefulWidget {
-  const AdminScreen({Key? key}) : super(key: key);
 
-  @override
-  _AdminScreenState createState() => _AdminScreenState();
-}
 
-class _AdminScreenState extends State<AdminScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return _buildAdminScreen(context);
-  }
-
-  Widget _buildAdminScreen(BuildContext context) {
-    return Scaffold(
-        drawer: NavDrawer(),
-        appBar: AppBar(
-          title: Text('Admin Screen'),
-          //leading: Icon(Icons.menu),
-        ));
-  }
-}
 
 class ProjectOwnerScreen extends StatefulWidget {
   const ProjectOwnerScreen({Key? key}) : super(key: key);

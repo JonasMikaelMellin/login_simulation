@@ -8,7 +8,7 @@ import 'package:login_simulation/common/catharinasRadionButton.dart';
 import 'package:provider/provider.dart';
 
 import 'data.dart';
-import 'diagram.dart';
+import 'common/diagram.dart';
 import 'navDrawer.dart';
 
 class EnterValue extends StatefulWidget {
