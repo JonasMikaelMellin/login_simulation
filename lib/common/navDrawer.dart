@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:login_simulation/participant/participantScreen.dart';
@@ -7,7 +6,6 @@ import 'package:provider/provider.dart';
 
 import '../admin/adminScreen.dart';
 import '../data.dart';
-import '../main.dart';
 import '../myApp.dart';
 import '../demo.dart';
 

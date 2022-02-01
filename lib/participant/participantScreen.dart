@@ -30,49 +30,7 @@ class _ParticipantScreenState extends State<ParticipantScreen> {
   double zoomStart = 0.0;
   int count = 0;
   int _maxId = 1;
-  getData1() async {
-    var lc = getLanguageCode();
-    await Future.delayed(Duration(seconds: 2));
-    var r = Random(1);
-    lc.then((_lc) {
-      List<Data> dataObj = List.generate(
-          14,
-              (index) => new Data(
-              date: DateTime.now().subtract(Duration(days: 15 - index)),
-              series2datum: {
-                Series.Wellbeing: Datum(
-                  value: r.nextInt(10) + 1,
-                  information: List.generate(r.nextInt(3),
-                          (index2) => 'Kommentar ${index2.toString()}'),
-                ),
-                Series.SenseOfHome: Datum(
-                  value: r.nextInt(10) + 1,
-                  information: List.generate(r.nextInt(3),
-                          (index2) => 'Kommentar ${index2.toString()}'),
-                ),
-                Series.Safety: Datum(
-                  value: r.nextInt(10) + 1,
-                  information: List.generate(r.nextInt(3),
-                          (index2) => 'Kommentar ${index2.toString()}'),
-                ),
-                Series.Loneliness: Datum(
-                  value: r.nextInt(10) + 1,
-                  information: List.generate(r.nextInt(3),
-                          (index2) => 'Kommentar ${index2.toString()}'),
-                )
-              }));
 
-      this.setState(() {
-        this._data1.addAll(dataObj);
-        int l = this._data0.length;
-        if (l > 7) {
-          this.zoomStart = 100.0 - 7 * 100 / l;
-        } else {
-          this.zoomStart = 0.0;
-        }
-      });
-    });
-  }
   getWhedcappSamplesWithCommentsFromDatabase() async {
     var lc = getLanguageCode();
     lc.then((_lc) async {
@@ -201,7 +159,7 @@ class _ParticipantScreenState extends State<ParticipantScreen> {
   }
 
   void _navigateToEnterValueSceenAndAddData() async {
-    var time = DateTime.now().add(Duration(days: this.count));
+    var time = DateTime.now().add(MyApp.demoMode.demoMode?Duration(days: this.count):Duration(days:0));
     final result = await Navigator.pushNamed(
         context, EnterValue.routeName(Series.values[0]),
         arguments: EnterValueArg(
