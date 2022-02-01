@@ -1,41 +1,40 @@
-import 'dart:collection';
 import 'dart:convert';
 import 'dart:math';
 
 import 'package:crypto/crypto.dart';
-import 'package:flutter_echarts/flutter_echarts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:login_simulation/admin/adminDemoMgmtScreen.dart';
+import 'package:login_simulation/database/whedcappStandalone.dart';
+import 'package:login_simulation/participant/participantScreen.dart';
+import 'package:login_simulation/common/welcomeScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'admin/adminChangePasswordScreen.dart';
+import 'admin/adminCrudUserScreen.dart';
 import 'admin/adminDatabaseMgmtScreen.dart';
 import 'admin/adminScreen.dart';
+import 'admin/adminUserMgmtScreen.dart';
+import 'common/defaultAppbar.dart';
+import 'config/colorConfigurationArg.dart';
+import 'config/colorConfigurationScreen.dart';
 import 'data.dart';
 import 'dataSpecification.dart';
 import 'common/diagram.dart';
-import 'editDataNotes.dart';
-import 'enterValue.dart';
-import 'navDrawer.dart';
+import 'database/whedcappStandalone.dart';
+import 'database/whedcappStandalone.dart';
+import 'participant/editDataNotes.dart';
+import 'participant/enterValue.dart';
+import 'myApp.dart';
+import 'common/navDrawer.dart';
 
 void main() async {
-  runApp(MyApp());
+  var result = initWhedcappStandaloneDatabase();
+  result.then((v) => runApp(MyApp()));
 }
 
-class Item {
-  const Item(this.language, this.country, this.description);
-  String icu_code() {
-    return this.language + "_" + this.country;
-  }
-
-  final String language;
-  final String country;
-  final String description;
-}
-
-enum Role { none, participant, administrator, projectOwner }
 
 Map<Role, int> r2i = {
   Role.none: -1,
@@ -57,13 +56,6 @@ String role2path(Role role) {
   return "/" + role.toString().split('.').last;
 }
 
-class User {
-  final String alias;
-  final String password;
-  final List<Role> roles;
-  User({required this.alias, required this.password, required this.roles});
-}
-
 class Token {
   Digest digest;
   late DateTime timestamp;
@@ -77,14 +69,13 @@ class NoSuchAliasException implements Exception {}
 
 class Auth {
   static Map<String, User> _u2u = {
-    'part': User(
-      alias: 'part', password: 'part', roles: [Role.participant]
-    ),
+    'part': User(alias: 'part', password: 'part', roles: [Role.participant]),
     'part@w.o': User(
         alias: 'part@w.o', password: 'papassword', roles: [Role.participant]),
     'adm@w.o': User(
         alias: 'adm@w.o',
-        password: '991b7e64f7f4a49d9b15e92d255effcde73626b730971cb83c93824dce7bd868efa56cfcc566c8a26c3b28c84eea4868b1506b18057860b4b4c6039c9e8893b6',
+        //password: '991b7e64f7f4a49d9b15e92d255effcde73626b730971cb83c93824dce7bd868efa56cfcc566c8a26c3b28c84eea4868b1506b18057860b4b4c6039c9e8893b6',
+        password: 'adpassword',
         roles: [Role.administrator, Role.projectOwner]),
     'proj@w.o': User(
         alias: 'proj@w.o', password: 'prpassword', roles: [Role.projectOwner]),
@@ -94,16 +85,34 @@ class Auth {
     return _u2u[user]!.roles;
   }
 
-  static bool checkPassword(final String alias, final String password) {
+  static Future<bool> checkPassword(
+      final String alias, final String password) async {
     try {
-      return _u2u[alias]!.password == password;
+      var potUser = await getUserInfo(alias);
+      if (potUser == null) {
+        throw NoSuchAliasException();
+      }
+      if (!potUser.enabled) {
+        return false;
+      }
+      if (MyApp.demoMode.demoMode) {
+        if (alias != 'demo') {
+          return false;
+        }
+      }
+      if (sha512.convert(utf8.encode(password)).toString() ==
+          potUser!.hashedPassword) {
+        return true;
+      }
+      return false;
     } catch (e) {
       throw NoSuchAliasException();
     }
   }
 
-  static Token getToken(final String alias, final String password) {
-    if (checkPassword(alias, password)) {
+  static Future<Token> getToken(
+      final String alias, final String password) async {
+    if (await checkPassword(alias, password)) {
       if (!_u2t.containsKey(alias)) {
         final l = (alias + password).codeUnits;
         _u2t[alias] = Token(digest: sha256.convert(l));
@@ -151,81 +160,6 @@ class AppLanguage extends ChangeNotifier {
   }
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  static void setLocale(BuildContext context, Locale newLocale) {
-    _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
-    state!.setLocale(newLocale);
-  }
-
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  Locale _locale = Locale('sv');
-  setLocale(Locale locale) {
-    setState(() {
-      _locale = locale;
-    });
-  }
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Whedcapp Login Demo',
-      locale: _locale,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      localeResolutionCallback: (locale, supportedLocales) {
-        for (var supportedLocale in supportedLocales) {
-          if (supportedLocale.languageCode == locale!.languageCode &&
-              supportedLocale.countryCode == locale.countryCode) {
-            return supportedLocale;
-          }
-        }
-        return supportedLocales.first;
-      },
-      initialRoute: '/',
-      routes: {
-        //'/': (context) => LoginState(title: 'Whedcapp Login Simulation Start'),
-        '/config': (context) => ConfigState(),
-        '/administrator': (context) => AdminScreen(),
-        '/projectOwner': (context) => ProjectOwnerScreen(),
-        '/participant': (context) => ParticipantScreen(),
-        EditDataNotesScreen.routeName: (context) => EditDataNotesScreen(),
-        AddDataNoteScreen.addDataNoteScreenPath: (context) =>
-            AddDataNoteScreen(),
-        EnterValue.routeName(Series.Loneliness): (context) => EnterValue(),
-        EnterValue.routeName(Series.Safety): (context) => EnterValue(),
-        EnterValue.routeName(Series.Wellbeing): (context) => EnterValue(),
-        EnterValue.routeName(Series.SenseOfHome): (context) => EnterValue(),
-        EnterValue.subsequentRouteName: (context) => EnterValue(),
-        AdminScreen.route: (context) => AdminScreen(),
-        AdminDatabaseMgmtScreen.route: (context) => AdminDatabaseMgmtScreen(),
-        AdminDemoMgmtScreen.route: (context) => AdminDemoMgmtScreen()
-      },
-      theme: ThemeData(
-          // This is the theme of your application.
-          //
-          // Try running your application with "flutter run". You'll see the
-          // application has a blue toolbar. Then, without quitting the app, try
-          // changing the primarySwatch below to Colors.green and then invoke
-          // "hot reload" (press "r" in the console where you ran "flutter run",
-          // or simply save your changes to "hot reload" in a Flutter IDE).
-          // Notice that the counter didn't reset back to zero; the application
-          // is not restarted.
-          primarySwatch: Colors.blue,
-          brightness: Brightness.light,
-          textTheme: const TextTheme(
-              headline1: TextStyle(fontSize: 36, fontWeight: FontWeight.bold))),
-      home: LoginState(),
-      //home: LoginState(title: 'Banzai'),
-    );
-  }
-}
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -264,17 +198,8 @@ class _LoginStateState extends State<LoginState> {
 
   Widget _buildForm(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            title: Text(AppLocalizations.of(context)!.loginTitle),
-            actions: <Widget>[
-              Padding(
-                  padding: EdgeInsets.only(right: 20.0),
-                  child: GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, '/config');
-                      },
-                      child: Icon(Icons.settings, size: 26.0)))
-            ]),
+      drawer: NavDrawer(),
+        appBar: defaultAppBar(context,AppLocalizations.of(context)!.loginTitle),
         body: Form(
             key: _formKey,
             child: Column(
@@ -287,8 +212,7 @@ class _LoginStateState extends State<LoginState> {
   }
 
   Widget _buildLoginTextField(BuildContext context) {
-    final RegExp _loginNameRegExp =
-        RegExp(r"^[a-zA-Z][a-zA-Z0-9\.]*@[a-zA-Z][a-zA-Z0-9\.]*$");
+    final RegExp _loginNameRegExp = RegExp(r"^[a-zA-Z][a-zA-Z0-9\.]*$");
     return Padding(
         padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
         child: TextFormField(
@@ -329,7 +253,7 @@ class _LoginStateState extends State<LoginState> {
                 cnt[rune] = cnt[rune]! + 1;
               });
 
-              if (v.length < 6) {
+              if (v.length < 0) {
                 return AppLocalizations.of(context)!
                     .loginPasswordValidatorErrorMsg;
               }
@@ -354,12 +278,20 @@ class _LoginStateState extends State<LoginState> {
                     content: Text(AppLocalizations.of(context)!
                         .loginProcessingMsg(_loginTextfieldCtrl.text))));
                 try {
-                  Token t = Auth.getToken(
-                      _loginTextfieldCtrl.text, _passwordTextfieldCtrl.text);
-                  Navigator.pushNamed(
-                      context,
-                      role2path(
-                          maxRole(Auth.getRoles(_loginTextfieldCtrl.text))));
+                  if (await Auth.checkPassword(
+                      _loginTextfieldCtrl.text, _passwordTextfieldCtrl.text)) {
+                    MyApp.userInfo =
+                        await getUserInfo(_loginTextfieldCtrl.text);
+                    var result = Navigator.pushNamed(
+                        context,
+                        MyApp.userInfo!.admin
+                            ? AdminScreen.route
+                            : ParticipantScreen.route);
+                    result.then((v) {
+                      _loginTextfieldCtrl.text = '';
+                      _passwordTextfieldCtrl.text = '';
+                    });
+                  }
                 } on NoSuchAliasException {
                   await Future.delayed(Duration(milliseconds: 1000));
                   ScaffoldMessenger.of(context).clearSnackBars();
@@ -370,89 +302,6 @@ class _LoginStateState extends State<LoginState> {
               }
             },
             child: Text('OK')));
-  }
-}
-
-class ConfigState extends StatefulWidget {
-  const ConfigState({Key? key}) : super(key: key);
-
-  @override
-  _ConfigStateState createState() => _ConfigStateState();
-}
-
-class _ConfigStateState extends State<ConfigState> {
-  final _formKey = GlobalKey<FormState>();
-  _ConfigStateState() {
-    this.selectedLanguage = languages.first;
-  }
-  late Item selectedLanguage;
-  List<Item> languages = <Item>[
-    const Item('en', '', 'English'),
-    const Item('sv', '', 'Svenska'),
-    const Item('en', 'US', 'American English')
-  ];
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-            title: Text(AppLocalizations.of(context)!.configurationTitle)),
-        body: _buildForm(context));
-  }
-
-  Widget _buildForm(BuildContext context) {
-    return Form(
-        key: _formKey,
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              _buildLanguageSelection(context),
-              _buildContentLanguageSelection(context)
-            ]));
-  }
-
-  Future<void> setLocale(Locale locale) async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    await _prefs.setString('languageCode', locale.languageCode);
-  }
-
-  Widget _buildLanguageSelection(BuildContext context) {
-    return DropdownButton<Item>(
-        hint: Text(
-            AppLocalizations.of(context)!.configurationSelectLanguagePrompt),
-        onChanged: (Item? value) async {
-          if (value!.country != '') {
-            setLocale(Locale(value.language, value.country));
-            MyApp.setLocale(context, Locale(value.language, value.country));
-          } else {
-            setLocale(Locale(value.language));
-            MyApp.setLocale(context, Locale(value.language));
-          }
-        },
-        items: languages.map((Item lang) {
-          return DropdownMenuItem<Item>(
-              value: lang,
-              child: Row(children: <Widget>[Text(lang.description)]));
-        }).toList());
-  }
-
-  Widget _buildContentLanguageSelection(BuildContext context) {
-    return DropdownButton<Item>(
-        hint: Text(AppLocalizations.of(context)!
-            .configurationSelectContentLanguagePrompt),
-        onChanged: (Item? value) async {
-          if (value!.country != '') {
-            setLocale(Locale(value.language, value.country));
-            MyApp.setLocale(context, Locale(value.language, value.country));
-          } else {
-            setLocale(Locale(value.language));
-            MyApp.setLocale(context, Locale(value.language));
-          }
-        },
-        items: languages.map((Item lang) {
-          return DropdownMenuItem<Item>(
-              value: lang,
-              child: Row(children: <Widget>[Text(lang.description)]));
-        }).toList());
   }
 }
 
@@ -481,166 +330,6 @@ class _ProjectOwnerScreenState extends State<ProjectOwnerScreen> {
         ));
   }
 }
-
-class ParticipantScreen extends StatefulWidget {
-  const ParticipantScreen({Key? key}) : super(key: key);
-
-  @override
-  _ParticipantScreenState createState() => _ParticipantScreenState();
-}
-
-class _ParticipantScreenState extends State<ParticipantScreen> {
-  List<Data> _data0 = [];
-  var _data1 = DataList([]);
-  double zoomStart = 0.0;
-  int count = 0;
-  getData1() async {
-    var lc = getLanguageCode();
-    await Future.delayed(Duration(seconds: 2));
-    var r = Random(1);
-    lc.then((_lc) {
-      List<Data> dataObj = List.generate(
-          14,
-          (index) => new Data(
-                  date: DateTime.now().subtract(Duration(days: 15 - index)),
-                  series2datum: {
-                    Series.Wellbeing: Datum(
-                      value: r.nextInt(10) + 1,
-                      information: List.generate(r.nextInt(3),
-                          (index2) => 'Kommentar ${index2.toString()}'),
-                    ),
-                    Series.SenseOfHome: Datum(
-                      value: r.nextInt(10) + 1,
-                      information: List.generate(r.nextInt(3),
-                          (index2) => 'Kommentar ${index2.toString()}'),
-                    ),
-                    Series.Safety: Datum(
-                      value: r.nextInt(10) + 1,
-                      information: List.generate(r.nextInt(3),
-                          (index2) => 'Kommentar ${index2.toString()}'),
-                    ),
-                    Series.Loneliness: Datum(
-                      value: r.nextInt(10) + 1,
-                      information: List.generate(r.nextInt(3),
-                          (index2) => 'Kommentar ${index2.toString()}'),
-                    )
-                  }));
-
-      this.setState(() {
-        this._data1.addAll(dataObj);
-        int l = this._data0.length;
-        if (l > 7) {
-          this.zoomStart = 100.0 - 7 * 100 / l;
-        } else {
-          this.zoomStart = 0.0;
-        }
-      });
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    this.getData1();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return _buildParticipantScreen(context);
-  }
-
-  Future<String?> getLanguageCode() async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    return _prefs.getString('languageCode');
-  }
-
-  dynamic encode(dynamic item) {
-    if (item is DateTime) {
-      return item.toIso8601String();
-    }
-    return item;
-  }
-
-  Widget _buildParticipantScreen(BuildContext context) {
-    return Scaffold(
-      drawer: NavDrawer(),
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.partScreenTitle),
-        actions: <Widget>[
-          Padding(
-              padding: EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, '/config');
-                  },
-                  child: Icon(Icons.settings, size: 26.0)))
-        ],
-      ),
-      body: Center(
-          child: ConstrainedBox(
-              constraints: BoxConstraints(
-                  minWidth: 100, minHeight: 100, maxHeight: 1000),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    MultiProvider(
-                        providers: [
-                          ChangeNotifierProvider.value(value: this._data1)
-                        ],
-                        child: ConstrainedBox(
-                            constraints: BoxConstraints(
-                                minWidth: 100, minHeight: 100, maxHeight: 800),
-                            child: Diagram())),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          ElevatedButton(
-                              child: Text(AppLocalizations.of(context)!
-                                  .acceptButtonText),
-                              onPressed: () {})
-                        ])
-                  ]))),
-      floatingActionButton: FloatingActionButton(
-        onPressed: ()  {
-          this.setState(() {
-            _navigateToEnterValueSceenAndAddData();
-          });
-        },
-        child: const Icon(Icons.add_circle_sharp),
-        backgroundColor: Colors.green,
-      ),
-    );
-  }
-  void _navigateToEnterValueSceenAndAddData() async {
-    var time = DateTime.now().add(Duration(days:this.count));
-    final result =  await Navigator.pushNamed(context, EnterValue.routeName(Series.values[0]),
-          arguments: EnterValueArg(currentTime: time, dataList: this._data1,currentSeries: Series.values[0])) as Map<Series,int> ;
-
-        this.setState(()
-        {
-          var tmp = Map<Series, Datum>();
-          Series.values.forEach((s) =>
-          tmp[s] = Datum(value: result![s]!, information: List.generate(0,(x)  {return '';})));
-          _data1.add(Data(date: time, series2datum: tmp));
-          this.count++;
-        });
-    }
-    // Add your onPressed code here!
-
-  }
-  // void _navigateToEditDataNoteScreen(Series series) async {
-  //   final result = await Navigator.pushNamed(context,EditDataNotesScreen.routeName,arguments: SeriesDataSpec(dataSpec: DataSpec(dataIndex: dataIndex, data: dataList),series: series));
-  //   if (result != null) {
-  //     this.setState(() =>
-  //         dataList[dataIndex].series2datum[series]!.information.add(
-  //             result as String));
-  //     changed = true;
-  //   }
-  // }
-
-
 
 
 class MyModel extends ChangeNotifier {

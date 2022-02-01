@@ -1,4 +1,125 @@
 {
+  "adminChangePasswordTitle": "Whedcapp - Change password",
+  "@adminChangePasswordTitle": {
+    "description": "Title of the change password screen"
+  },
+  "adminChangePasswordButton": "Change password",
+  "@adminChangePasswordButton": {
+    "description": "Button text of the change password button"
+  },
+  "adminDatabaseMgmtBackupButton": "Backup database",
+  "@adminDatabaseMgmtBackupButton": {
+    "description": "Backup the database"
+  },
+  "adminDatabaseMgmtClearButton": "Clear database",
+  "@adminDatabaseMgmtClearButton": {
+    "description": "Clears the database"
+  },
+  "adminDatabaseMgmtDumpButton":  "Extract data",
+  "@adminDatabaseMgmtDumpButton": {
+    "description": "Dumps the database to a csv file"
+  },
+  "adminDatabaseMgmtExtractDataTitle":  "Please choose the file for the output in CSV format",
+  "@adminDatabaseMgmtExtractDataTitle": {
+    "description": "Title for file picker dialog"
+  },
+  "adminDatabaseExtractDataScreenTitle": "Whedcapp - Extract data",
+  "@adminDatabaseExtractDataScreenTitle": {
+    "description": "Title of the extract data screen"
+  },
+  "adminDatabaseMgmtScreenTitle": "Whedcapp - Database management",
+  "@adminDatabaseMgmtScreenTitle": {
+    "description": "Title of the database management screen"
+  },
+  "adminDatabaseMgmtEmptyTableMessage": "There are no samples in the dabase yet",
+  "@adminDatabaseMgmtEmptyTableMessage": {
+    "description": "Empty database management"
+  },
+  "adminLabelAdmin": "Administrator?",
+  "@adminLabelAdmin": {
+    "description": "Label for administrator switch"
+  },
+  "adminLabelAlias": "Alias",
+  "@adminLabelAlias": {
+    "description": "Label for alias entries"
+  },
+  "adminLabelComments":  "Comments?",
+  "@adminLabelComments": {
+    "description": "Label for if commments exists"
+  },
+  "adminLabelEnabled": "Enabled?",
+  "@adminLabelEnabled": {
+    "description": "Label for enabled switch"
+  },
+  "adminLabelId": "Identity",
+  "@adminLabelId": {
+    "description": "Label for identity entries"
+  },
+  "adminLabelPassword": "Password",
+  "@adminLabelPassword": {
+    "description": "Label for password entries"
+  },
+  "adminLabelTimestamp": "Timestamp",
+  "@adminLabelTimestamp": {
+    "description": "Label for timestamp entries"
+  },
+  "adminLabelUid": "User number",
+  "@adminLabelUid": {
+    "description": "Label for user identity entries"
+  },
+  "adminHelpTextAlias": "Enter alias",
+  "@adminHelpTextAlias": {
+    "description": "Prompt for entering alias"
+  },
+  "adminHelpTextId": "Enter Identity",
+  "@adminHelpTextId": {
+    "description": "Prompt for entering identity"
+  },
+  "adminHelpTextPassword": "Enter Password",
+  "@adminHelpTextPassword": {
+    "description": "Prompt for entering password"
+  },
+  "adminScreenNumberOfRecords":  "Number of records",
+  "@adminScreenNumberOfRecords": {
+    "description": "Number of records"
+  },
+  "adminScreenNumberOfUsers": "Number of users",
+  "@adminScreenNumberOfUsers": {
+    "description": "Number of users title"
+  },
+  "adminScreenTitle": "Whedcapp - Administrator",
+  "@adminScreenTitle": {
+    "description": "Title of the administrator main screen"
+  },
+  "adminScreenDatabaseManagementButtonText":  "Database management",
+  "@adminScreenDatabaseManagementButtonText": {
+    "description": "Button text for database management"
+  },
+  "adminScreenUserManagementButtonText": "User management",
+  "@adminScreenUserManagementButtonText": {
+    "description": "Button text for user management"
+  },
+  "adminCrudUserScreenCreateTitle": "Whedcapp - Add user",
+  "@adminCrudUserScreenCreateTitle": {
+    "description": "Title of CrudUserScreen - for creating a user"
+  },
+  "adminCrudUserScreenDeleteTitle": "Whedcapp - Confirm delete user",
+  "@adminCrudUserScreenDeleteTitle": {
+    "description": "Title of CrudUserScreen - for deleting a user"
+  },
+  "adminCrudUserScreenReadTitle": "Whedcapp - View user",
+  "@adminCrudUserScreenReadTitle": {
+    "description": "Title of CrudUserScreen - for reading/viewing a user"
+  },
+  "adminCrudUserScreenUpdateTitle": "Whedcapp - Update user",
+  "@adminCrudUserScreenUpdateTitle": {
+    "description": "Title of CrudUserScreen - for updating a user"
+  },
+  "adminUserMgmtScreenTitle": "Whedcapp - User management",
+  "@adminUserMgmtScreenTitle": {
+    "description": "Title of User management screen - for handling users"
+  },
+
   "acceptButtonText": "OK",
   "@acceptButtonText": {
     "description":"Self explanatory"
@@ -28,6 +149,21 @@
   "cancelButtonText": "Cancel",
   "@cancelButtonText": {
     "description": "Self-explanatory"
+  },
+  "changeToAdminPageText": "Switch to admin page",
+  "@changeToAdminPageText": {
+    "description": "Text for changing to admin page"
+  },
+  "changeToParticipantPageText": "Switch to participant page",
+  "@changeToParticipantPageText": {
+    "description": "Text for changing to participant page"
+  },
+  "configurationChooseColor": "Choose color for {series}",
+  "@configurationChooseColor": {
+    "description": "Button text for configuring the color",
+    "placeholders": {
+      "series": {}
+    }
   },
   "configurationSelectLanguagePrompt": "Select interface language",
   "@configurationSelectLanguagePrompt": {
@@ -103,6 +239,18 @@
       "name": {}
     }
   },
+  "logoutText": "Logout",
+  "@logoutText": {
+    "description": "Text for logout alternatives, buttons etc."
+  },
+  "navDrawerTurnOffDemoMode": "Turn off demo mode",
+  "@navDrawerTurnOffDemoMode": {
+    "description": "Navigational drawer text for turning on demonstration mode"
+  },
+  "navDrawerTurnOnDemoMode": "Turn on demo mode",
+  "@navDrawerTurnOnDemoMode": {
+    "description": "Navigational drawer text for turning on demonstration mode"
+  },
   "partScreenTitle": "Whedcapp - Participant",
   "@partScreenTitle": {
     "description": "Title of participant screen."
@@ -122,6 +270,21 @@
   "seriesLoneliness": "Loneliness",
   "@seriesLoneliness": {
     "description": "Name of the loneliness series"
+  },
+  "sideMenuTitle": "Side menu",
+  "@sideMenuTitle": {
+    "description": "Title of the side menu"
+  },
+  "welcomeScreenTitle": "Welcome to Whedcapp",
+  "@welcomeScreenTitle": {
+    "description": "Title text for welcome screen"
+  },
+  "welcomeText": "Welcome to Whedcapp (Well-being Health and Environment Data Collection App). The purpose of this app is to enable researchers collect data about your well-being and related factors.",
+  "@welcomeText": {
+    "description": "Welcome text"
+  },
+  "welcomeTitle": "Welcome",
+  "@welcomeTitle": {
+    "description": "Title text for navigational drawer"
   }
-
 }

@@ -7,9 +7,9 @@ import 'package:intl/intl.dart';
 import 'package:login_simulation/common/catharinasRadionButton.dart';
 import 'package:provider/provider.dart';
 
-import 'data.dart';
-import 'common/diagram.dart';
-import 'navDrawer.dart';
+import '../data.dart';
+import '../common/diagram.dart';
+import '../common/navDrawer.dart';
 
 class EnterValue extends StatefulWidget {
   EnterValue({Key? key}) : super(key: key);

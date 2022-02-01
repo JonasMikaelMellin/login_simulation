@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../data.dart';
 import '../dataSpecification.dart';
-import '../editDataNotes.dart';
+import '../participant/editDataNotes.dart';
 
 class DiagramArgs {
   final List<Data> dataList;

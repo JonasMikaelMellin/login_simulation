@@ -1,0 +1,1 @@
+enum CrudOp {CREATE, READ, UPDATE, DELETE}

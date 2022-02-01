@@ -5,21 +5,78 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'config/configScreen.dart';
+import 'database/whedcappStandalone.dart';
+import 'main.dart';
+
+class Item {
+  const Item(this.language, this.country, this.description);
+  String icu_code() {
+    return this.language + "_" + this.country;
+  }
+
+  final String language;
+  final String country;
+  final String description;
+}
+
+class WColor extends ChangeNotifier {
+  Color _color;
+  WColor(this._color);
+  void set color(Color color) {
+    this._color = color;
+    notifyListeners();
+  }
+  Color get color {
+    return this._color;
+  }
+}
+
+class WColors extends ChangeNotifier {
+  Map<Series,WColor> series2color = {
+    Series.Loneliness: WColor(Color(0x80008837)),
+    Series.Wellbeing: WColor(Color(0x807b3294)),
+    Series.Safety: WColor(Color(0x80c2a5cf)),
+    Series.SenseOfHome: WColor(Color(0x80a6dba0))
+  };
+  WColors() {
+    var result = colors();
+    result.then((obj) {
+      var ccList = obj as List<ConfigColor>;
+      ccList.forEach((cc) {
+        series2color[cc.series]!.color = Color(cc.color);
+      });
+    });
+  }
+  void set(Series series, Color color) {
+    series2color[series]!.color = color;
+    notifyListeners();
+  }
+  Color get(Series series) {
+    return series2color![series]!.color;
+  }
+}
+
+enum Role { none, participant, administrator, projectOwner }
+
+class User {
+  final String alias;
+  final String password;
+  final List<Role> roles;
+  User({required this.alias, required this.password, required this.roles});
+}
 
 enum Series { Wellbeing, SenseOfHome, Safety, Loneliness }
 const Map<Series,int> seriesColor = {Series.Wellbeing: 0x7b3294, Series.SenseOfHome: 0xa6dba0, Series.Safety: 0xc2a5cf, Series.Loneliness: 0x008837 };
 int getSeriesColor(Series series) {
+  return ConfigScreen.wcolors.get(series).value;
   return seriesColor[series]!;
 }
 String getJavascriptSeriesColor(Series series) {
-  return '#'+seriesColor[series]!.toRadixString(16).padLeft(6,'0');
+  // Must move alpha to end for JavaScript, sigh
+  var color = getSeriesColor(series);
+  return '#'+((color << 8 | color >> 24)&0xffffffff).toRadixString(16).padLeft(6,'0');
 }
-Map<Series,String> seriesName = {
-  Series.Wellbeing: 'Välmående',
-  Series.SenseOfHome: 'Hemkänsla',
-  Series.Safety: 'Trygghet',
-  Series.Loneliness: 'Ensamhet'
-};
 
 String getSeriesName(BuildContext context,Series series) {
   switch (series) {
@@ -125,4 +182,40 @@ class AddedComments {
   Map<Series,List<int>> _series2commentIdxs = {};
   AddedComments(this._series2commentIdxs);
   getCommentIdxs(series) => _series2commentIdxs[series];
+}
+
+class DatabaseInfo extends ChangeNotifier {
+  DatabaseInfo() {
+    getNumberOfUsers().then((v) => numbOfUsers = v);
+    getNumberOfWhedcappSamples().then((v) => numbOfRecords = v);
+  }
+  int numbOfUsers = 0;
+  int numbOfRecords = 0;
+  void set numberOfUsers(int numberOfUsers) {
+    this.numbOfUsers = numberOfUsers;
+    notifyListeners();
+  }
+  void set numberOfRecords(int numberOfRecords) {
+    this.numbOfRecords = numberOfRecords;
+    notifyListeners();
+  }
+  int get numberOfUsers {
+    return numbOfUsers;
+  }
+  int get numberOfRecords {
+    return numbOfRecords;
+  }
+
+}
+
+class DemoMode extends ChangeNotifier {
+  bool _demoMode;
+  DemoMode(this._demoMode);
+  void set demoMode(bool flag) {
+    _demoMode = flag;
+    notifyListeners();
+  }
+  bool get demoMode {
+    return _demoMode;
+  }
 }
