@@ -354,7 +354,7 @@ Future<List<Comment>> commentsForUser(UserInfo userInfo) async {
     return Comment(
         id: maps[i]['id'],
         whedcappSample: result[0],
-        metric: Metric.values[maps[i]['metric']],
+        metric: Metric.values[maps[i]['series']],
         dateTime: DateTime.parse(maps[i]['dateTime']),
         comment: maps[i]['comment']
     );
