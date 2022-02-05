@@ -18,6 +18,7 @@ class AdminDatabaseMgmtScreen extends StatefulWidget {
 
 class _AdminDatabaseMgmtScreenState extends State<AdminDatabaseMgmtScreen> {
   final double listRowPadding = 2.0;
+  final columnWidthFactor = [ 0.5, 1.0, 0.6, 2.0, 0.6, 0.6, 0.6, 0.6, 0.6];
   ChangeNotifier changeNotifier = ChangeNotifier();
   @override
   Widget build(BuildContext context) {
@@ -70,7 +71,7 @@ class _AdminDatabaseMgmtScreenState extends State<AdminDatabaseMgmtScreen> {
                                       .adminLabelId
                                       .toString()
                                       .length *
-                                  0.5,
+                                  columnWidthFactor[0],
                               AppLocalizations.of(context)!.adminLabelId),
                           _buildListColumn(
                               context,
@@ -79,7 +80,7 @@ class _AdminDatabaseMgmtScreenState extends State<AdminDatabaseMgmtScreen> {
                                       .adminLabelAlias
                                       .toString()
                                       .length *
-                                  0.6,
+                                  columnWidthFactor[1],
                               AppLocalizations.of(context)!.adminLabelAlias),
                           _buildListColumn(
                               context,
@@ -88,7 +89,7 @@ class _AdminDatabaseMgmtScreenState extends State<AdminDatabaseMgmtScreen> {
                                       .adminLabelUid
                                       .toString()
                                       .length *
-                                  0.6,
+                                  columnWidthFactor[2],
                               AppLocalizations.of(context)!.adminLabelUid),
                           _buildListColumn(
                               context,
@@ -97,7 +98,7 @@ class _AdminDatabaseMgmtScreenState extends State<AdminDatabaseMgmtScreen> {
                                       .adminLabelTimestamp
                                       .toString()
                                       .length *
-                                  2.0,
+                                  columnWidthFactor[3],
                               AppLocalizations.of(context)!
                                   .adminLabelTimestamp),
                           _buildListColumn(
@@ -107,7 +108,7 @@ class _AdminDatabaseMgmtScreenState extends State<AdminDatabaseMgmtScreen> {
                                       .seriesWellbeing
                                       .toString()
                                       .length *
-                                  0.6,
+                                  columnWidthFactor[4],
                               AppLocalizations.of(context)!.seriesWellbeing),
                           _buildListColumn(
                               context,
@@ -116,7 +117,7 @@ class _AdminDatabaseMgmtScreenState extends State<AdminDatabaseMgmtScreen> {
                                       .seriesSafety
                                       .toString()
                                       .length *
-                                  0.6,
+                                  columnWidthFactor[5],
                               AppLocalizations.of(context)!.seriesSafety),
                           _buildListColumn(
                               context,
@@ -125,7 +126,7 @@ class _AdminDatabaseMgmtScreenState extends State<AdminDatabaseMgmtScreen> {
                                       .seriesLoneliness
                                       .toString()
                                       .length *
-                                  0.6,
+                                  columnWidthFactor[6],
                               AppLocalizations.of(context)!.seriesLoneliness),
                           _buildListColumn(
                               context,
@@ -134,7 +135,7 @@ class _AdminDatabaseMgmtScreenState extends State<AdminDatabaseMgmtScreen> {
                                       .seriesSenseOfHome
                                       .toString()
                                       .length *
-                                  0.6,
+                                  columnWidthFactor[7],
                               AppLocalizations.of(context)!.seriesSenseOfHome),
                           _buildListColumn(
                               context,
@@ -143,7 +144,7 @@ class _AdminDatabaseMgmtScreenState extends State<AdminDatabaseMgmtScreen> {
                                       .adminLabelComments
                                       .toString()
                                       .length *
-                                  0.6,
+                                  columnWidthFactor[8],
                               AppLocalizations.of(context)!.adminLabelComments),
                         ])
                       : Row(children: [
@@ -154,7 +155,7 @@ class _AdminDatabaseMgmtScreenState extends State<AdminDatabaseMgmtScreen> {
                                       .adminLabelId
                                       .toString()
                                       .length *
-                                  0.5,
+                                  columnWidthFactor[0],
                               lows[index-1].id),
                           _buildListColumn(
                               context,
@@ -163,7 +164,7 @@ class _AdminDatabaseMgmtScreenState extends State<AdminDatabaseMgmtScreen> {
                                       .adminLabelAlias
                                       .toString()
                                       .length *
-                                  0.6,
+                                  columnWidthFactor[1],
                               lows[index-1].user.alias),
                           _buildListColumn(
                               context,
@@ -172,7 +173,7 @@ class _AdminDatabaseMgmtScreenState extends State<AdminDatabaseMgmtScreen> {
                                       .adminLabelUid
                                       .toString()
                                       .length *
-                                  0.6,
+                                  columnWidthFactor[2],
                               lows[index-1].user.id),
                           _buildListColumn(
                               context,
@@ -181,7 +182,7 @@ class _AdminDatabaseMgmtScreenState extends State<AdminDatabaseMgmtScreen> {
                                       .adminLabelTimestamp
                                       .toString()
                                       .length *
-                                  2.0,
+                                  columnWidthFactor[3],
                               lows[index-1].dateTime),
                           _buildListColumn(
                               context,
@@ -190,7 +191,7 @@ class _AdminDatabaseMgmtScreenState extends State<AdminDatabaseMgmtScreen> {
                                       .seriesWellbeing
                                       .toString()
                                       .length *
-                                  0.6,
+                                  columnWidthFactor[4],
                               lows[index-1].wellbeing),
                           _buildListColumn(
                               context,
@@ -199,7 +200,7 @@ class _AdminDatabaseMgmtScreenState extends State<AdminDatabaseMgmtScreen> {
                                       .seriesSafety
                                       .toString()
                                       .length *
-                                  0.6,
+                                  columnWidthFactor[5],
                               lows[index-1].safety),
                           _buildListColumn(
                               context,
@@ -208,7 +209,7 @@ class _AdminDatabaseMgmtScreenState extends State<AdminDatabaseMgmtScreen> {
                                       .seriesLoneliness
                                       .toString()
                                       .length *
-                                  0.6,
+                                  columnWidthFactor[6],
                               lows[index-1].loneliness),
                           _buildListColumn(
                               context,
@@ -217,7 +218,7 @@ class _AdminDatabaseMgmtScreenState extends State<AdminDatabaseMgmtScreen> {
                                       .seriesSenseOfHome
                                       .toString()
                                       .length *
-                                  0.6,
+                                  columnWidthFactor[7],
                               lows[index-1].senseOfHome),
                           _buildListColumn(
                               context,
@@ -226,7 +227,7 @@ class _AdminDatabaseMgmtScreenState extends State<AdminDatabaseMgmtScreen> {
                                       .adminLabelComments
                                       .toString()
                                       .length *
-                                  0.6,
+                                  columnWidthFactor[8],
                               '?'),
                         ]);
                 }),

@@ -85,8 +85,9 @@ class Demo {
           enabled: false
       ));
       var result = whedcappSamples(d);
-      result.then((ws) {
-        deleteWhedcappSample(ws as WhedcappSample);
+      result.then((lowso) {
+        final lows = lowso as List<WhedcappSample>;
+        lows.forEach((ws) => deleteWhedcappSample(ws as WhedcappSample));
       });
     });
   }
