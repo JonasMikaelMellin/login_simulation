@@ -96,7 +96,7 @@ class Auth {
         return false;
       }
       if (MyApp.demoMode.demoMode) {
-        if (alias != 'demo') {
+        if (alias != 'demo' && alias != 'admin') {
           return false;
         }
       }

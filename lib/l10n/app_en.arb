@@ -181,7 +181,7 @@
   "@editDataNoteScreenTitle":  {
     "description": "The title of the screen for editing notes with respect to data items"
   },
-  "enterValueQuestion": "How would you rate your sense of \"{series}\" on a scale 1 (really bad) to 10 (really good)?",
+  "enterValueQuestion": "How would you rate your sense of \"{series}\" on a scale 0 (really bad) to 10 (really good)?",
   "@enterValueQuestion": {
     "description": "The question for entering values",
     "placeholders": {

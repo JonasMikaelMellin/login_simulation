@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import '../admin/adminScreen.dart';
 import '../data.dart';
 import '../myApp.dart';
-import '../demo.dart';
+import 'package:login_simulation/config/demo.dart';
 
 
 class NavDrawer extends StatelessWidget {
@@ -46,6 +46,11 @@ class NavDrawer extends StatelessWidget {
                         AppLocalizations.of(context)!.navDrawerTurnOffDemoMode),
                     onTap: () {
                       MyApp.demoMode.demoMode = !MyApp.demoMode.demoMode;
+                      if (MyApp.demoMode.demoMode) {
+                        Demo.initializeDemo();
+                      } else {
+                        Demo.removeDemo();
+                      }
                     }
                 );
 

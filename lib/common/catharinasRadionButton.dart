@@ -46,10 +46,13 @@ class _CatharinasRadioButtonState extends State<CatharinasRadioButton> {
               child:
               Padding(
                 padding: const EdgeInsets.fromLTRB(10.0,0.0,10.0,0.0),
-                child: Expanded(flex: 2, child:
-                Text(widget.question,
-                  style: TextStyle(backgroundColor: Colors.blue, color: Colors.white, fontSize: 18.0),
-                )),
+                child: Flex(
+                  direction: Axis.horizontal,
+                  children: [ Expanded(flex: 2, child:
+                  Text(widget.question,
+                    style: TextStyle(backgroundColor: Colors.blue, color: Colors.white, fontSize: 18.0),
+                  )),]
+                ),
               ),
             ),
                Row(
