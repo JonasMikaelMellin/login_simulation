@@ -36,7 +36,7 @@ class _ParticipantScreenState extends State<ParticipantScreen> {
     lc.then((_lc) async {
       var result = whedcappSamples(MyApp.userInfo!);
       var result2 = commentsForUser(MyApp.userInfo!);
-      this._maxId = await getNumberOfWhedcappSamples();
+      this._maxId = await getWhedcappSamplesMaxId()+1;
       result.then((wsObj) {
         result2.then((coObj) {
           var lows = wsObj as List<WhedcappSample>;
@@ -49,29 +49,29 @@ class _ParticipantScreenState extends State<ParticipantScreen> {
                     value: ws.wellbeing,
                     information: loco.where((co) =>
                     co.whedcappSample.id == ws.id &&
-                        co.metric == Series.Wellbeing.index).map((co) =>
-                    co.comment).toList()
+                        co.metric.index == Series.Wellbeing.index).map((co) =>
+                    co.commentText).toList()
                 ),
                 Series.Safety: Datum(
                     value: ws.safety,
                     information: loco.where((co) =>
                     co.whedcappSample.id == ws.id &&
-                        co.metric == Series.Safety.index).map((co) =>
-                    co.comment).toList()
+                        co.metric.index == Series.Safety.index).map((co) =>
+                    co.commentText).toList()
                 ),
                 Series.Loneliness: Datum(
                     value: ws.loneliness,
                     information: loco.where((co) =>
                     co.whedcappSample.id == ws.id &&
-                        co.metric == Series.Loneliness.index).map((co) =>
-                    co.comment).toList()
+                        co.metric.index == Series.Loneliness.index).map((co) =>
+                    co.commentText).toList()
                 ),
                 Series.SenseOfHome: Datum(
                     value: ws.senseOfHome,
                     information: loco.where((co) =>
                     co.whedcappSample.id == ws.id &&
-                        co.metric == Series.SenseOfHome.index).map((co) =>
-                    co.comment).toList()
+                        co.metric.index == Series.SenseOfHome.index).map((co) =>
+                    co.commentText).toList()
                 ),
               }
 
@@ -134,7 +134,7 @@ class _ParticipantScreenState extends State<ParticipantScreen> {
                         ],
                         child: ConstrainedBox(
                             constraints: BoxConstraints(
-                                minWidth: 100, minHeight: 100, maxHeight: 800),
+                                minWidth: 100, minHeight: 100, maxHeight: MediaQuery.of(context).size.height*0.7),
                             child: Diagram())),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -188,7 +188,6 @@ class _ParticipantScreenState extends State<ParticipantScreen> {
       this.count++;
     });
   }
-// Add your onPressed code here!
 
 }
 

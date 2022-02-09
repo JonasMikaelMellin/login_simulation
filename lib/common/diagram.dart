@@ -41,6 +41,7 @@ class _DiagramState extends State<Diagram> {
   Widget build(BuildContext context) {
     return Consumer<DataList>(
         builder: (context,dataList,child) => Echarts(
+          //TODO: Fix zoom handling, both directions. Current solution is hard coded and is reset every time you move between screens.
         onMessage: (String msgStr) {
           Map<String,dynamic> msg = jsonDecode(msgStr);
           Navigator.pushNamed(context,EditDataNotesScreen.routeName,arguments: DataSpec(dataIndex: msg['dataIndex'], data: dataList)) ;
@@ -57,7 +58,7 @@ class _DiagramState extends State<Diagram> {
             source: ${jsonEncode(dataList.data.map((el) => el.toEchart(context)).toList(),toEncodable: encode)}
           },
           title: {
-            text: 'Testgraf',
+            text: 'Whedcapp',
             textStyle: {
               fontSize: 24
             }

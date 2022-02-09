@@ -1,12 +1,13 @@
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:login_simulation/admin/adminCommentsDatabaseMgmtScreen.dart';
 import 'package:login_simulation/participant/participantScreen.dart';
 import 'package:login_simulation/common/welcomeScreen.dart';
 
 import 'admin/adminChangePasswordScreen.dart';
 import 'admin/adminCrudUserScreen.dart';
-import 'admin/adminDatabaseMgmtExtactData.dart';
+import 'admin/adminDatabaseMgmtExtractData.dart';
 import 'admin/adminDatabaseMgmtScreen.dart';
 import 'admin/adminDemoMgmtScreen.dart';
 import 'admin/adminScreen.dart';
@@ -86,6 +87,7 @@ class _MyAppState extends State<MyApp> {
         WelcomeScreen.route: (context) => WelcomeScreen(),
         ColorConfigurationScreen.route: (context) => ColorConfigurationScreen(),
         AdminDatabaseMgmtExtractData.route: (context) => AdminDatabaseMgmtExtractData(),
+        AdminCommentsDatabaseMgmtScreen.route: (context) => AdminCommentsDatabaseMgmtScreen()
       },
       theme: ThemeData(
         // This is the theme of your application.

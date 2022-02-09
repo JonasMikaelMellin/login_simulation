@@ -1,11 +1,13 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:login_simulation/database/whedcappStandalone.dart';
 import 'package:provider/provider.dart';
 
 import '../data.dart';
 import '../dataSpecification.dart';
-import '../defaultAppBar.dart';
+import '../common/defaultAppBar.dart';
 
 abstract class DataNoteListItem {
   final Series series;
@@ -136,7 +138,7 @@ class ShowSeriesModel extends ChangeNotifier {
 
 class _EditDataNotesScreenState extends State<EditDataNotesScreen> {
   //Map<Series, bool> _showSeries = {};
-  Map<Series, List<int>> newComments = {};
+  Map<Series, List<int>> newCommentsIdx = {};
   var dataList = DataList([]);
   int dataIndex = -1;
   bool changed = false;
@@ -145,7 +147,7 @@ class _EditDataNotesScreenState extends State<EditDataNotesScreen> {
   initState() {
     super.initState();
 //    Series.values.forEach((s) => _showSeries[s] = false);
-    Series.values.forEach((s) => newComments[s] = []);
+    Series.values.forEach((s) => newCommentsIdx[s] = []);
     changed = false;
   }
 
@@ -155,18 +157,7 @@ class _EditDataNotesScreenState extends State<EditDataNotesScreen> {
     final args = ModalRoute.of(context)!.settings.arguments as DataSpec;
     dataList = args.data;
     dataIndex = args.dataIndex;
-
   }
-
-  // bool getShowSeries(Series series) {
-  //   return _showSeries[series]!;
-  // }
-  //
-  // void setShowSeries(Series series, bool flag) {
-  //   this.setState(() {
-  //     _showSeries[series] = flag;
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -177,6 +168,7 @@ class _EditDataNotesScreenState extends State<EditDataNotesScreen> {
 
   Widget _buildEditDataNoteScreen(BuildContext context) {
     return Scaffold(
+      //TODO: Use defaultAppBar
         appBar: AppBar(
             title: Text(AppLocalizations.of(context)!.editDataNoteScreenTitle),
             actions: <Widget>[
@@ -215,46 +207,50 @@ class _EditDataNotesScreenState extends State<EditDataNotesScreen> {
         lst.add(NoteItem(note: note, series: series));
       }
     }
-    return Flexible(child: ListView.builder(
-            itemCount: lst.length,
-            itemBuilder: (context, index) {
-              if (lst[index] is SeriesListItem ||
-                  context
-                      .read<ShowSeriesModel>()
-                      .getShowSeries(lst[index].series)) {
-                return ListTile(
-                  title: lst[index].buildTitle(context),
-                  trailing: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        data.series2datum[lst[index].series]!.information
-                                        .length >
-                                    0 &&
-                                lst[index] is SeriesListItem
-                            ? Icon(Icons.more_horiz)
-                            : SizedBox.shrink(),
-                        lst[index].buildEditButton(context, true, () {
-                          this.setState(() {
-                            _navigateToAddDataNoteAndAddData(lst[index].series);
-                          });
-                        }),
-                        lst[index].buildButton(
-                            context,
-                            context
-                                .read<ShowSeriesModel>()
-                                .getShowSeries(lst[index].series), () {
-                          var ssm = context.read<ShowSeriesModel>();
-                          ssm.setShowSeries(lst[index].series,
-                              !ssm.getShowSeries(lst[index].series));
-                        }),
-                      ]),
-                  tileColor: lst[index].getColor(),
-                );
-              } else {
-                return SizedBox.shrink();
-              }
-            }));
+    return SizedBox(
+      height: MediaQuery.of(context).size.height*0.8,
+      child: Flexible(
+          child: ListView.builder(
+              itemCount: lst.length,
+              itemBuilder: (context, index) {
+                if (lst[index] is SeriesListItem ||
+                    context
+                        .read<ShowSeriesModel>()
+                        .getShowSeries(lst[index].series)) {
+                  return ListTile(
+                    title: lst[index].buildTitle(context),
+                    trailing: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          data.series2datum[lst[index].series]!.information
+                                          .length >
+                                      0 &&
+                                  lst[index] is SeriesListItem
+                              ? Icon(Icons.more_horiz)
+                              : SizedBox.shrink(),
+                          lst[index].buildEditButton(context, true, () {
+                            this.setState(() {
+                              _navigateToAddDataNoteAndAddData(lst[index].series);
+                            });
+                          }),
+                          lst[index].buildButton(
+                              context,
+                              context
+                                  .read<ShowSeriesModel>()
+                                  .getShowSeries(lst[index].series), () {
+                            var ssm = context.read<ShowSeriesModel>();
+                            ssm.setShowSeries(lst[index].series,
+                                !ssm.getShowSeries(lst[index].series));
+                          }),
+                        ]),
+                    tileColor: lst[index].getColor(),
+                  );
+                } else {
+                  return SizedBox.shrink();
+                }
+              })),
+    );
   }
 
   void _navigateToAddDataNoteAndAddData(Series series) async {
@@ -265,12 +261,11 @@ class _EditDataNotesScreenState extends State<EditDataNotesScreen> {
             series: series));
     if (result != null) {
       this.setState(() {
-        dataList.addComment(series,dataIndex,result as String);
+        dataList.addComment(series, dataIndex, result as String);
         changed = true;
-        this.newComments[series]!.add(
-            dataList.data[dataIndex]
-            .series2datum[series]!
-            .information.length-1);
+        this.newCommentsIdx[series]!.add(
+            dataList.data[dataIndex].series2datum[series]!.information.length -
+                1);
       });
     }
   }
@@ -283,20 +278,39 @@ class _EditDataNotesScreenState extends State<EditDataNotesScreen> {
             children: [
           ElevatedButton(
               child: Text(AppLocalizations.of(context)!.acceptButtonText),
-              onPressed: () {Navigator.pop(context,AddedComments(newComments));}),
+              onPressed: ()  {
+                var maxCidF =  getMaxIdOfComments();
+                maxCidF.then((maxCidBase) {
+                  var maxCid = maxCidBase+1;
+                  var wsF = getWhedcappSampleForTimestamp(
+                      dataList.data[dataIndex].date);
+                  wsF.then((ws) {
+                    newCommentsIdx.forEach((k, v) {
+                      v.forEach((cidx) {
+                        final c = Comment(
+                            id: maxCid++,
+                            whedcappSample: ws,
+                            metric: Metric.values[k.index],
+                            dateTime: DateTime.now(),
+                            commentText: dataList.data[dataIndex]
+                                .series2datum[k]!
+                                .information[cidx]);
+                        insertComment(c);
+                      });
+                    });
+                  });
+                });
+                Navigator.pop(context, AddedComments(newCommentsIdx));
+              }),
           ElevatedButton(
               child: Text(AppLocalizations.of(context)!.cancelButtonText),
               onPressed: () {
-                Series.values.forEach(
-                    (s) {
-                      newComments[s]!.reversed.forEach(
-                          (i) {
-                            dataList.removeComment(s,dataIndex,i);
-                          }
-                      );
-                    }
-                );
-                Series.values.forEach((s) => newComments[s] = []);
+                Series.values.forEach((s) {
+                  newCommentsIdx[s]!.reversed.forEach((i) {
+                    dataList.removeComment(s, dataIndex, i);
+                  });
+                });
+                Series.values.forEach((s) => newCommentsIdx[s] = []);
                 Navigator.pop(context);
               })
         ]));
@@ -338,9 +352,9 @@ class _AddDataNoteScreenState extends State<AddDataNoteScreen> {
 
   Widget _buildAddDataNoteScreen(BuildContext context) {
     return Scaffold(
-        appBar: DefaultAppBar(
-            context: context,
-            title: Text(AppLocalizations.of(context)!.addDataNoteScreenTitle)),
+        appBar: defaultAppBar(
+            context,
+            AppLocalizations.of(context)!.addDataNoteScreenTitle),
         body: _buildAddDataNoteScreenBody(context));
   }
 

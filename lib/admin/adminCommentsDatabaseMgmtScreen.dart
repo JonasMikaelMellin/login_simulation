@@ -8,24 +8,25 @@ import 'package:provider/provider.dart';
 
 import 'adminDatabaseMgmtExtractData.dart';
 
-class AdminDatabaseMgmtScreen extends StatefulWidget {
-  const AdminDatabaseMgmtScreen({Key? key}) : super(key: key);
-  static String route = '/administrator/whedcappSamplesDatabaseScreen';
+class AdminCommentsDatabaseMgmtScreen extends StatefulWidget {
+  const AdminCommentsDatabaseMgmtScreen({Key? key}) : super(key: key);
+  static String route = '/administrator/commentsDatabaseScreen';
   @override
-  _AdminDatabaseMgmtScreenState createState() =>
-      _AdminDatabaseMgmtScreenState();
+  _AdminCommentsDatabaseMgmtScreenState createState() =>
+      _AdminCommentsDatabaseMgmtScreenState();
 }
 
-class _AdminDatabaseMgmtScreenState extends State<AdminDatabaseMgmtScreen> {
+class _AdminCommentsDatabaseMgmtScreenState extends State<AdminCommentsDatabaseMgmtScreen> {
   final double listRowPadding = 2.0;
-  final columnWidthFactor = [ 0.5, 1.0, 0.6, 2.0, 0.6, 0.6, 0.6, 0.6, 0.6];
+  // id, "alias", wid, metric, dateTime, comment
+  final columnWidthFactor = [ 0.5, 1.0, 0.6, 1.0, 0.6, 0.6, ];
   ChangeNotifier changeNotifier = ChangeNotifier();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: NavDrawer(),
         appBar: defaultAppBar(context,
-            AppLocalizations.of(context)!.adminDatabaseMgmtScreenTitle),
+            AppLocalizations.of(context)!.adminCommentsDatabaseMgmtScreenTitle),
         body: MultiProvider(
           providers: [
             ChangeNotifierProvider.value(value: changeNotifier)
@@ -52,15 +53,15 @@ class _AdminDatabaseMgmtScreenState extends State<AdminDatabaseMgmtScreen> {
             return Container(
                 child: Center(
                     child: Text(AppLocalizations.of(context)!
-                        .adminDatabaseMgmtEmptyTableMessage)));
+                        .adminCommentsDatabaseMgmtEmptyTableMessage)));
           }
-          List<WhedcappSample> lows = snapshot.data;
+          List<Comment> loco = snapshot.data;
 
           return SizedBox(
             height: MediaQuery.of(context).size.height * 0.8,
             child: ListView.builder(
                 padding: EdgeInsets.all(8.0),
-                itemCount: lows.length + 1,
+                itemCount: loco.length + 1,
                 itemBuilder: (context, index) {
                   return index == 0
                       ? Row(children: [
@@ -86,11 +87,21 @@ class _AdminDatabaseMgmtScreenState extends State<AdminDatabaseMgmtScreen> {
                               context,
                               Theme.of(context).textTheme.bodyText1!.fontSize! *
                                   AppLocalizations.of(context)!
-                                      .adminLabelUid
+                                      .adminLabelWid
                                       .toString()
                                       .length *
                                   columnWidthFactor[2],
-                              AppLocalizations.of(context)!.adminLabelUid),
+                              AppLocalizations.of(context)!.adminLabelWid),
+                          _buildListColumn(
+                              context,
+                              Theme.of(context).textTheme.bodyText1!.fontSize! *
+                                  AppLocalizations.of(context)!
+                                      .adminLabelMetric
+                                      .toString()
+                                      .length *
+                                  columnWidthFactor[3],
+                              AppLocalizations.of(context)!
+                                  .adminLabelMetric),
                           _buildListColumn(
                               context,
                               Theme.of(context).textTheme.bodyText1!.fontSize! *
@@ -98,45 +109,8 @@ class _AdminDatabaseMgmtScreenState extends State<AdminDatabaseMgmtScreen> {
                                       .adminLabelTimestamp
                                       .toString()
                                       .length *
-                                  columnWidthFactor[3],
-                              AppLocalizations.of(context)!
-                                  .adminLabelTimestamp),
-                          _buildListColumn(
-                              context,
-                              Theme.of(context).textTheme.bodyText1!.fontSize! *
-                                  AppLocalizations.of(context)!
-                                      .seriesWellbeing
-                                      .toString()
-                                      .length *
                                   columnWidthFactor[4],
-                              AppLocalizations.of(context)!.seriesWellbeing),
-                          _buildListColumn(
-                              context,
-                              Theme.of(context).textTheme.bodyText1!.fontSize! *
-                                  AppLocalizations.of(context)!
-                                      .seriesSafety
-                                      .toString()
-                                      .length *
-                                  columnWidthFactor[5],
-                              AppLocalizations.of(context)!.seriesSafety),
-                          _buildListColumn(
-                              context,
-                              Theme.of(context).textTheme.bodyText1!.fontSize! *
-                                  AppLocalizations.of(context)!
-                                      .seriesLoneliness
-                                      .toString()
-                                      .length *
-                                  columnWidthFactor[6],
-                              AppLocalizations.of(context)!.seriesLoneliness),
-                          _buildListColumn(
-                              context,
-                              Theme.of(context).textTheme.bodyText1!.fontSize! *
-                                  AppLocalizations.of(context)!
-                                      .seriesSenseOfHome
-                                      .toString()
-                                      .length *
-                                  columnWidthFactor[7],
-                              AppLocalizations.of(context)!.seriesSenseOfHome),
+                              AppLocalizations.of(context)!.adminLabelTimestamp),
                           _buildListColumn(
                               context,
                               Theme.of(context).textTheme.bodyText1!.fontSize! *
@@ -144,7 +118,7 @@ class _AdminDatabaseMgmtScreenState extends State<AdminDatabaseMgmtScreen> {
                                       .adminLabelComments
                                       .toString()
                                       .length *
-                                  columnWidthFactor[8],
+                                  columnWidthFactor[5],
                               AppLocalizations.of(context)!.adminLabelComments),
                         ])
                       : Row(children: [
@@ -156,7 +130,7 @@ class _AdminDatabaseMgmtScreenState extends State<AdminDatabaseMgmtScreen> {
                                       .toString()
                                       .length *
                                   columnWidthFactor[0],
-                              lows[index-1].id),
+                              loco[index-1].id),
                           _buildListColumn(
                               context,
                               Theme.of(context).textTheme.bodyText1!.fontSize! *
@@ -165,16 +139,25 @@ class _AdminDatabaseMgmtScreenState extends State<AdminDatabaseMgmtScreen> {
                                       .toString()
                                       .length *
                                   columnWidthFactor[1],
-                              lows[index-1].user.alias),
+                              loco[index-1].whedcappSample.user.alias),
                           _buildListColumn(
                               context,
                               Theme.of(context).textTheme.bodyText1!.fontSize! *
                                   AppLocalizations.of(context)!
-                                      .adminLabelUid
+                                      .adminLabelWid
                                       .toString()
                                       .length *
                                   columnWidthFactor[2],
-                              lows[index-1].user.id),
+                              loco[index-1].whedcappSample.id),
+                          _buildListColumn(
+                              context,
+                              Theme.of(context).textTheme.bodyText1!.fontSize! *
+                                  AppLocalizations.of(context)!
+                                      .adminLabelMetric
+                                      .toString()
+                                      .length *
+                                  columnWidthFactor[3],
+                              loco[index-1].metric.toString()),
                           _buildListColumn(
                               context,
                               Theme.of(context).textTheme.bodyText1!.fontSize! *
@@ -182,44 +165,8 @@ class _AdminDatabaseMgmtScreenState extends State<AdminDatabaseMgmtScreen> {
                                       .adminLabelTimestamp
                                       .toString()
                                       .length *
-                                  columnWidthFactor[3],
-                              lows[index-1].dateTime),
-                          _buildListColumn(
-                              context,
-                              Theme.of(context).textTheme.bodyText1!.fontSize! *
-                                  AppLocalizations.of(context)!
-                                      .seriesWellbeing
-                                      .toString()
-                                      .length *
                                   columnWidthFactor[4],
-                              lows[index-1].wellbeing),
-                          _buildListColumn(
-                              context,
-                              Theme.of(context).textTheme.bodyText1!.fontSize! *
-                                  AppLocalizations.of(context)!
-                                      .seriesSafety
-                                      .toString()
-                                      .length *
-                                  columnWidthFactor[5],
-                              lows[index-1].safety),
-                          _buildListColumn(
-                              context,
-                              Theme.of(context).textTheme.bodyText1!.fontSize! *
-                                  AppLocalizations.of(context)!
-                                      .seriesLoneliness
-                                      .toString()
-                                      .length *
-                                  columnWidthFactor[6],
-                              lows[index-1].loneliness),
-                          _buildListColumn(
-                              context,
-                              Theme.of(context).textTheme.bodyText1!.fontSize! *
-                                  AppLocalizations.of(context)!
-                                      .seriesSenseOfHome
-                                      .toString()
-                                      .length *
-                                  columnWidthFactor[7],
-                              lows[index-1].senseOfHome),
+                              loco[index-1].dateTime),
                           _buildListColumn(
                               context,
                               Theme.of(context).textTheme.bodyText1!.fontSize! *
@@ -227,13 +174,13 @@ class _AdminDatabaseMgmtScreenState extends State<AdminDatabaseMgmtScreen> {
                                       .adminLabelComments
                                       .toString()
                                       .length *
-                                  columnWidthFactor[8],
-                              '?'),
+                                  columnWidthFactor[5],
+                              loco[index-1].commentText),
                         ]);
                 }),
           );
         },
-        future: whedcappSamplesAll());
+        future: commentsForAll());
   }
 
   _buildListColumn(BuildContext context, double width, dynamic value) {

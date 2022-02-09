@@ -7,6 +7,10 @@
   "@adminChangePasswordButton": {
     "description": "Button text of the change password button"
   },
+  "adminCommentsDatabaseMgmtEmptyTableMessage": "There are no comments in the dabase yet",
+  "@adminCommentsDatabaseMgmtEmptyTableMessage": {
+    "description": "Empty comments view of database management"
+  },
   "adminDatabaseMgmtBackupButton": "Backup database",
   "@adminDatabaseMgmtBackupButton": {
     "description": "Backup the database"
@@ -30,6 +34,10 @@
   "adminDatabaseMgmtScreenTitle": "Whedcapp - Database management",
   "@adminDatabaseMgmtScreenTitle": {
     "description": "Title of the database management screen"
+  },
+  "adminCommentsDatabaseMgmtScreenTitle": "Whedcapp - Comments view management",
+  "@adminCommentsDatabaseMgmtScreenTitle": {
+    "description": "Title of the comments view of database management screen"
   },
   "adminDatabaseMgmtEmptyTableMessage": "There are no samples in the dabase yet",
   "@adminDatabaseMgmtEmptyTableMessage": {
@@ -55,6 +63,11 @@
   "@adminLabelId": {
     "description": "Label for identity entries"
   },
+  "adminLabelMetric": "Metric",
+  "@adminLabelMetric": {
+    "description": "Label for metric entries"
+  },
+
   "adminLabelPassword": "Password",
   "@adminLabelPassword": {
     "description": "Label for password entries"
@@ -66,6 +79,10 @@
   "adminLabelUid": "User number",
   "@adminLabelUid": {
     "description": "Label for user identity entries"
+  },
+  "adminLabelWid": "Sample identity",
+  "@adminLabelWid": {
+    "description": "Label for sample identity entries"
   },
   "adminHelpTextAlias": "Enter alias",
   "@adminHelpTextAlias": {
@@ -91,7 +108,11 @@
   "@adminScreenTitle": {
     "description": "Title of the administrator main screen"
   },
-  "adminScreenDatabaseManagementButtonText":  "Database management",
+  "adminScreenCommentsDatabaseManagementButtonText":  "Comments view management",
+  "@adminScreenCommentsDatabaseManagementButtonText": {
+    "description": "Button text for comments view of database management"
+  },
+  "adminScreenDatabaseManagementButtonText":  "Sample database management",
   "@adminScreenDatabaseManagementButtonText": {
     "description": "Button text for database management"
   },

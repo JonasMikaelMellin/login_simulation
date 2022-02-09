@@ -8,6 +8,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../data.dart';
 import '../common/navDrawer.dart';
+import 'adminCommentsDatabaseMgmtScreen.dart';
 import 'adminDatabaseMgmtScreen.dart';
 import 'adminDemoMgmtScreen.dart';
 import 'adminUserMgmtScreen.dart';
@@ -98,8 +99,11 @@ class _AdminScreenState extends State<AdminScreen> {
             ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
               children: [
                 _buildDatabaseMgmtButton(context),
+                _buildCommentDatabaseMgmtButton(context),
                 _buildUserMgmtButton(context),
             ]
             )
@@ -119,11 +123,24 @@ class _AdminScreenState extends State<AdminScreen> {
         child: Text(AppLocalizations.of(context)!.adminScreenDatabaseManagementButtonText));
   }
 
+  _buildCommentDatabaseMgmtButton(context) {
+    return ElevatedButton(
+        onPressed: () {
+          _navigateToAdminCommentsDatabaseScreen(context);
+          getNumberOfUsers().then((numberOfUsers) => setState(() {databaseInfo.numberOfUsers = numberOfUsers;}));
+          getNumberOfWhedcappSamples().then((numberOfRecords) => setState(() {databaseInfo.numberOfRecords = numberOfRecords;}));
+        },
+        child: Text(AppLocalizations.of(context)!.adminScreenCommentsDatabaseManagementButtonText));
+  }
+
 
   void _navigateToAdminDatabaseScreen(context) {
     Navigator.pushNamed(context,AdminDatabaseMgmtScreen.route);
   }
 
+  void _navigateToAdminCommentsDatabaseScreen(context) {
+    Navigator.pushNamed(context,AdminCommentsDatabaseMgmtScreen.route);
+  }
 
 
   void _navigateToAdminDemoMgmtScreen(context) {

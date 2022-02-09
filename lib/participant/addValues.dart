@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 import '../data.dart';
-import '../defaultAppBar.dart';
+import '../common/defaultAppBar.dart';
 
 class AddValueArgs {
   final List<Data> dataList;
@@ -31,7 +31,7 @@ class _AddValueScreenState extends State<AddValueScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: DefaultAppBar(context: context, title: AppLocalizations.of(context)!.addValueScreenTitle(DateFormat.yMMMd(DateTime.now()))),
+      appBar: defaultAppBar(context, AppLocalizations.of(context)!.addValueScreenTitle(DateFormat.yMMMd(DateTime.now()))),
       body: _buildAddValueBody(context)
     );
   }

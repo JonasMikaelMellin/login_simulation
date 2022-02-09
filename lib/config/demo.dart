@@ -7,13 +7,14 @@ import '../data.dart';
 
 class Demo {
   static void initializeDemo() async {
+    final numberOfSamples = 100;
     var r = Random(1);
 
     List<Data> dataObj = List.generate(
-        14,
+        numberOfSamples,
             (index) =>
         new Data(
-            date: DateTime.now().subtract(Duration(days: 15 - index)),
+            date: DateTime.now().subtract(Duration(days: numberOfSamples - index)),
             series2datum: {
               Series.Wellbeing: Datum(
                 value: r.nextInt(10) + 1,
@@ -36,9 +37,10 @@ class Demo {
                         (index2) => 'Kommentar ${index2.toString()}'),
               )
             }));
-    int maxid = await getNumberOfWhedcappSamples()+1;
-    int maxcid = await getMaxIdOfComments();
+    int maxid = await getWhedcappSamplesMaxId()+1;
+    int maxcid = await getMaxIdOfComments()+1;
     var user = await getUserInfo('demo');
+    int ccount = 0;
     dataObj.forEach((o) {
       var tmp = WhedcappSample(
         id: maxid++,
@@ -52,13 +54,14 @@ class Demo {
       insertWhedcappSample(tmp);
       Series.values.forEach((s) {
         o.series2datum[s]!.information.forEach((c) {
-          insertComment(Comment(
+          final c = Comment(
               id: maxcid++,
-              comment: '',
+              commentText: 'Kommentar ${ccount++}',
               dateTime: o.date,
               metric: Metric.values[s.index],
               whedcappSample: tmp
-          ));
+          );
+          insertComment(c);
         });
       });
     });
