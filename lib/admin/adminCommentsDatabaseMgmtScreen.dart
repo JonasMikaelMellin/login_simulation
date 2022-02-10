@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:login_simulation/admin/adminCommentsDatabaseMgmtExtractData.dart';
 import 'package:login_simulation/common/defaultAppbar.dart';
 import 'package:login_simulation/common/navDrawer.dart';
+import 'package:login_simulation/database/whedcappComment.dart';
 import 'package:login_simulation/database/whedcappStandalone.dart';
 import 'package:provider/provider.dart';
 
@@ -55,7 +57,7 @@ class _AdminCommentsDatabaseMgmtScreenState extends State<AdminCommentsDatabaseM
                     child: Text(AppLocalizations.of(context)!
                         .adminCommentsDatabaseMgmtEmptyTableMessage)));
           }
-          List<Comment> loco = snapshot.data;
+          List<WhedcappComment> loco = snapshot.data;
 
           return SizedBox(
             height: MediaQuery.of(context).size.height * 0.8,
@@ -211,13 +213,13 @@ class _AdminCommentsDatabaseMgmtScreenState extends State<AdminCommentsDatabaseM
           child:
               Text(AppLocalizations.of(context)!.adminDatabaseMgmtDumpButton),
           onPressed: () async {
-            Navigator.pushNamed(context,AdminDatabaseMgmtExtractData.route);
+            Navigator.pushNamed(context,AdminCommentsDatabaseMgmtExtractData.route);
           }),
       ElevatedButton(
           child:
               Text(AppLocalizations.of(context)!.adminDatabaseMgmtClearButton),
           onPressed: () {
-            deleteAllSamples();
+            deleteAllComments();
             changeNotifier.notifyListeners();
           }),
 

@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:login_simulation/database/whedcappComment.dart';
+import 'package:login_simulation/database/whedcappSample.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -40,7 +42,7 @@ class _ParticipantScreenState extends State<ParticipantScreen> {
       result.then((wsObj) {
         result2.then((coObj) {
           var lows = wsObj as List<WhedcappSample>;
-          var loco = coObj as List<Comment>;
+          var loco = coObj as List<WhedcappComment>;
           List<Data> dataObj = lows.map((ws) {
             return Data(
               date: ws.dateTime,

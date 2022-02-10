@@ -267,7 +267,7 @@ class _DiagramState extends State<Diagram> {
                 dataIndex: params.dataIndex
               };
               let msgAsString = JSON.stringify(msg);
-              console.log('msg = '+msgAsString); 
+              //console.log('msg = '+msgAsString); 
               Messager.postMessage(msgAsString);
             }
           });

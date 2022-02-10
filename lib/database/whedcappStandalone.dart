@@ -3,6 +3,9 @@ import 'dart:ffi';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:login_simulation/common/typeInfo.dart';
+import 'package:login_simulation/database/whedcappComment.dart';
+import 'package:login_simulation/database/userInfo.dart';
+import 'package:login_simulation/database/whedcappSample.dart';
 import 'package:path/path.dart';
 import 'package:reflectable/mirrors.dart';
 import 'package:sqflite/sqflite.dart';
@@ -10,154 +13,10 @@ import 'package:tuple/tuple.dart';
 
 import '../data.dart';
 
-class UserInfo {
-  static Map<int, FormEntryInfo> field = {
-    0: FormEntryInfo(
-        order: 0,
-        name: 'id',
-        type: TypeInfo.INT,
-        hidden: false,
-        label: 'Id',
-        helpText: 'Enter id'),
-    1: FormEntryInfo(
-        order: 1,
-        name: 'alias',
-        type: TypeInfo.STRING,
-        hidden: false,
-        label: 'Alias',
-        helpText: 'Enter alias'),
-    2: FormEntryInfo(
-        order: 2,
-        name: 'hashedPassword',
-        type: TypeInfo.STRING,
-        hidden: true,
-        label: 'Password',
-        helpText: 'Enter password'),
-    3: FormEntryInfo(
-        order: 3,
-        name: 'admin',
-        type: TypeInfo.BOOL,
-        hidden: false,
-        label: 'Administrator?',
-        helpText: 'Toggle administrator'),
-    4: FormEntryInfo(
-        order: 4,
-        name: 'enabled',
-        type: TypeInfo.BOOL,
-        hidden: false,
-        label: 'Enabled?',
-        helpText: 'Toggle enabled flag'),
-  };
-  final int id;
-  final String alias;
-  late final String hashedPassword;
-  late final bool admin;
-  late final bool enabled;
 
-  UserInfo(
-      {required this.id,
-      required this.alias,
-      required this.hashedPassword,
-      required this.admin,
-      required this.enabled});
 
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'alias': alias,
-      'hashed_password': hashedPassword,
-      'admin': admin ? 1 : 0,
-      'enabled': enabled ? 1 : 0
-    };
-  }
 
-  @override
-  String toString() {
-    return 'User(id: $id, alias: $alias, admin: $admin, enabled: $enabled)';
-  }
 
-  dynamic get(String name) {
-    if (name == 'id')
-      return id;
-    else if (name == 'alias')
-      return alias;
-    else if (name == 'hashedPassword')
-      return hashedPassword;
-    else if (name == 'admin')
-      return admin;
-    else if (name == 'enabled')
-      return enabled;
-    else
-      throw Exception('Unknown field name');
-  }
-}
-
-class WhedcappSample {
-  final int id;
-  final UserInfo user;
-  final DateTime dateTime;
-  final int wellbeing;
-  final int senseOfHome;
-  final int safety;
-  final int loneliness;
-
-  WhedcappSample(
-      {required this.id,
-      required this.user,
-      required this.dateTime,
-      required this.wellbeing,
-      required this.senseOfHome,
-      required this.safety,
-      required this.loneliness});
-
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'uid': user.id,
-      'dateTime': dateTime.toIso8601String(),
-      'wellbeing': wellbeing,
-      'sense_of_home': senseOfHome,
-      'safety': safety,
-      'loneliness': loneliness
-    };
-  }
-
-  @override
-  String toString() {
-    return 'WhedcappSample(Id: $id, User: $user, dateTime: $dateTime, wellbeing: $wellbeing, senseOfHome: $senseOfHome, safety: $safety, loneliness: $loneliness)';
-  }
-}
-//TODO: Merge Metric and Series. Stupid mistake!
-enum Metric { wellbeing, senseOfHome, safety, loneliness }
-
-class Comment {
-  final int id;
-  final WhedcappSample whedcappSample;
-  final Metric metric;
-  final DateTime dateTime;
-  final String commentText;
-  Comment(
-      {required this.id,
-      required this.whedcappSample,
-      required this.metric,
-      required this.dateTime,
-      required this.commentText});
-
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'wid': whedcappSample.id,
-      'metric': metric.index,
-      'dateTime': dateTime.toIso8601String(),
-      'comment_text': commentText
-    };
-  }
-
-  @override
-  String toString() {
-    return 'Comment(Id: $id, whedcappSample: $whedcappSample, metric: $metric, dateTime: $dateTime, comment: $commentText)';
-  }
-}
 
 late Future<Database> database;
 
@@ -415,7 +274,7 @@ Future<WhedcappSample> getWhedcappSampleForTimestamp(DateTime timestamp) async {
 }
 
 // Comment
-Future<void> insertComment(Comment comment) async {
+Future<void> insertComment(WhedcappComment comment) async {
   final db = await database;
   await db.transaction((txn) {
     return txn.insert('comment', comment.toMap(),
@@ -423,7 +282,7 @@ Future<void> insertComment(Comment comment) async {
   });
 }
 
-Future<List<Comment>> comments(WhedcappSample whedcappSample) async {
+Future<List<WhedcappComment>> comments(WhedcappSample whedcappSample) async {
   final db = await database;
   final List<Map<String, dynamic>> maps = await db.transaction((txn) {
     return txn
@@ -433,7 +292,7 @@ Future<List<Comment>> comments(WhedcappSample whedcappSample) async {
     return List.empty();
   }
   return List.generate(maps.length, (i) {
-    return Comment(
+    return WhedcappComment(
         id: maps[i]['id'],
         whedcappSample: whedcappSample,
         metric: Metric.values[maps[i]['metric']],
@@ -442,7 +301,7 @@ Future<List<Comment>> comments(WhedcappSample whedcappSample) async {
   });
 }
 
-Future<List<Comment>> commentsForUser(UserInfo userInfo) async {
+Future<List<WhedcappComment>> commentsForUser(UserInfo userInfo) async {
   final db = await database;
   final List<Map<String, dynamic>> maps = await db.transaction((txn) {
     return txn.rawQuery(
@@ -455,7 +314,7 @@ Future<List<Comment>> commentsForUser(UserInfo userInfo) async {
   }
   return List.generate(maps.length, (i) {
     var result = ws.where((element) => element.id == maps[i]['wid']).toList();
-    return Comment(
+    return WhedcappComment(
         id: maps[i]['id'],
         whedcappSample: result[0],
         metric: Metric.values[maps[i]['series']],
@@ -464,7 +323,7 @@ Future<List<Comment>> commentsForUser(UserInfo userInfo) async {
   });
 }
 
-Future<List<Comment>> commentsForAll() async {
+Future<List<WhedcappComment>> commentsForAll() async {
   final db = await database;
   final List<Map<String, dynamic>> maps = await db.transaction((txn) {
     return txn.rawQuery(
@@ -477,7 +336,7 @@ Future<List<Comment>> commentsForAll() async {
   }
   return List.generate(maps.length, (i) {
     var result = ws.where((element) => element.id == maps[i]['wid']).toList();
-    final c = Comment(
+    final c = WhedcappComment(
         id: maps[i]['id'],
         whedcappSample: result[0],
         metric: Metric.values[maps[i]['series']],
@@ -487,7 +346,7 @@ Future<List<Comment>> commentsForAll() async {
   });
 }
 
-Future<void> updateComment(Comment comment) async {
+Future<void> updateComment(WhedcappComment comment) async {
   final db = await database;
   await db.transaction((txn) {
     return txn.update('comment', comment.toMap(),
@@ -495,7 +354,7 @@ Future<void> updateComment(Comment comment) async {
   });
 }
 
-Future<void> deleteComment(Comment comment) async {
+Future<void> deleteComment(WhedcappComment comment) async {
   final db = await database;
   await db.transaction((txn) {
     return txn.delete('comment', where: 'id = ?', whereArgs: [comment.id]);
@@ -518,7 +377,13 @@ Future<int> getMaxIdOfComments() async {
   });
   return maps[0]['IFNULL(max(id),0)'];
 }
-
+Future<void> deleteAllComments() async {
+  final db = await database;
+  await db.transaction((txn) {
+    return txn.delete('comment');
+  });
+  return;
+}
 class ConfigColor {
   Series series;
   int color;

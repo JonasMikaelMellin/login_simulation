@@ -1,6 +1,9 @@
 
 import 'dart:math';
 
+import 'package:login_simulation/database/userInfo.dart';
+import 'package:login_simulation/database/whedcappComment.dart';
+import 'package:login_simulation/database/whedcappSample.dart';
 import 'package:login_simulation/database/whedcappStandalone.dart';
 
 import '../data.dart';
@@ -54,7 +57,7 @@ class Demo {
       insertWhedcappSample(tmp);
       Series.values.forEach((s) {
         o.series2datum[s]!.information.forEach((c) {
-          final c = Comment(
+          final c = WhedcappComment(
               id: maxcid++,
               commentText: 'Kommentar ${ccount++}',
               dateTime: o.date,

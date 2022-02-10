@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:login_simulation/common/defaultAppbar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:login_simulation/database/userInfo.dart';
 import 'package:login_simulation/database/whedcappStandalone.dart';
 
 import '../common/navDrawer.dart';

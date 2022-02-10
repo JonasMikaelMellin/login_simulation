@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:login_simulation/common/crudOperations.dart';
 import 'package:login_simulation/common/typeInfo.dart';
+import 'package:login_simulation/database/userInfo.dart';
 import 'package:login_simulation/database/whedcappStandalone.dart';
 import 'package:login_simulation/database/whedcappStandalone.dart';
 

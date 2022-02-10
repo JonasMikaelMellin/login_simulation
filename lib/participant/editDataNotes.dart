@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:login_simulation/database/whedcappComment.dart';
 import 'package:login_simulation/database/whedcappStandalone.dart';
 import 'package:provider/provider.dart';
 
@@ -287,7 +288,7 @@ class _EditDataNotesScreenState extends State<EditDataNotesScreen> {
                   wsF.then((ws) {
                     newCommentsIdx.forEach((k, v) {
                       v.forEach((cidx) {
-                        final c = Comment(
+                        final c = WhedcappComment(
                             id: maxCid++,
                             whedcappSample: ws,
                             metric: Metric.values[k.index],

@@ -4,6 +4,7 @@ import 'package:login_simulation/admin/genUserAdminTextEditingControllers.dart';
 import 'package:login_simulation/common/crudOperations.dart';
 import 'package:login_simulation/common/defaultAppbar.dart';
 import 'package:login_simulation/common/typeInfo.dart';
+import 'package:login_simulation/database/userInfo.dart';
 import 'package:login_simulation/database/whedcappStandalone.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

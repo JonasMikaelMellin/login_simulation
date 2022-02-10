@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:login_simulation/admin/adminCommentsDatabaseMgmtExtractData.dart';
 import 'package:login_simulation/admin/adminCommentsDatabaseMgmtScreen.dart';
 import 'package:login_simulation/participant/participantScreen.dart';
 import 'package:login_simulation/common/welcomeScreen.dart';
@@ -15,6 +16,7 @@ import 'admin/adminUserMgmtScreen.dart';
 import 'config/colorConfigurationScreen.dart';
 import 'config/configScreen.dart';
 import 'data.dart';
+import 'database/userInfo.dart';
 import 'database/whedcappStandalone.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -87,7 +89,8 @@ class _MyAppState extends State<MyApp> {
         WelcomeScreen.route: (context) => WelcomeScreen(),
         ColorConfigurationScreen.route: (context) => ColorConfigurationScreen(),
         AdminDatabaseMgmtExtractData.route: (context) => AdminDatabaseMgmtExtractData(),
-        AdminCommentsDatabaseMgmtScreen.route: (context) => AdminCommentsDatabaseMgmtScreen()
+        AdminCommentsDatabaseMgmtScreen.route: (context) => AdminCommentsDatabaseMgmtScreen(),
+        AdminCommentsDatabaseMgmtExtractData.route: (context) => AdminCommentsDatabaseMgmtExtractData()
       },
       theme: ThemeData(
         // This is the theme of your application.

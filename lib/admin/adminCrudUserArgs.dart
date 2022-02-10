@@ -1,5 +1,6 @@
 
 import 'package:login_simulation/common/crudOperations.dart';
+import 'package:login_simulation/database/userInfo.dart';
 import 'package:login_simulation/database/whedcappStandalone.dart';
 
 class CrudUserArgReq {
