@@ -1,3 +1,16 @@
+/*
+This file is part of Whedcapp - standalone.
+
+Whedcapp is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation,
+either version 3 of the License, or (at your option) any later version.
+
+Whedcapp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with Foobar. If not, see <https://www.gnu.org/licenses/>.
+*/
+
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
@@ -126,28 +139,35 @@ class _ParticipantScreenState extends State<ParticipantScreen> {
           child: ConstrainedBox(
               constraints: BoxConstraints(
                   minWidth: 100, minHeight: 100, maxHeight: 1000),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    MultiProvider(
-                        providers: [
-                          ChangeNotifierProvider.value(value: this._data1)
-                        ],
-                        child: ConstrainedBox(
-                            constraints: BoxConstraints(
-                                minWidth: 100, minHeight: 100, maxHeight: MediaQuery.of(context).size.height*0.7),
-                            child: Diagram())),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          ElevatedButton(
-                              child: Text(AppLocalizations.of(context)!
-                                  .acceptButtonText),
-                              onPressed: () {})
-                        ])
-                  ]))),
+              child: Flex(
+                direction: Axis.vertical,
+                children: [ Expanded(
+                  flex: 1,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        MultiProvider(
+                            providers: [
+                              ChangeNotifierProvider.value(value: this._data1)
+                            ],
+                            child: ConstrainedBox(
+                                constraints: BoxConstraints(
+                                    minWidth: 100, minHeight: 100, maxHeight: MediaQuery.of(context).size.height*0.7),
+                                child: Diagram())),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              ElevatedButton(
+                                  child: Text(AppLocalizations.of(context)!
+                                      .acceptButtonText),
+                                  onPressed: () {})
+                            ])
+                      ]),
+                ),
+            ]
+              ))),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           this.setState(() {

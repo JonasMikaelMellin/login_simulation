@@ -210,13 +210,21 @@
     }
 
   },
-  "enterValueQuestionSenseOfHome": "How would you rate your sense of \"feeling at home\" on a scale 1 to 10?",
-  "@enterValueQuestionSensOfHome": {
-    "description": "Sense of home"
+  "enterValueQuestionLoneliness": "How would you rate your sense of “Loneliness” on a scale from 0 (none) to 10 (worst imaginable)?",
+  "@enterValueQuestionLoneliness": {
+    "description": "Loneliness question"
   },
-  "enterValueQuestionWellBeing": "How would you rate your \"sense of well-being\" on a scale 1 to 10?",
+  "enterValueQuestionSafety": "How would you rate your sense of “Safety” on a scale from 0 (none) to 10 (best possible)?",
+  "@enterValueQuestionSafety": {
+    "description": "Safety question"
+  },
+  "enterValueQuestionSenseOfHome": "How would you rate your sense of ”Feeling at home” on a scale from 0 (none) to 10 (best possible)?",
+  "@enterValueQuestionSensOfHome": {
+    "description": "Sense of home question"
+  },
+  "enterValueQuestionWellBeing": "How would you rate your sense of ”Well-being” on a scale from 0 (none) to 10 (best possible)?",
   "@enterValueQuestionWellBeing": {
-    "description": "Sense of home"
+    "description": "Wellbeing question"
   },
   "loginTitle": "Whedcapp demo",
   "@loginTitle": {
@@ -300,7 +308,7 @@
   "@welcomeScreenTitle": {
     "description": "Title text for welcome screen"
   },
-  "welcomeText": "Welcome to Whedcapp (Well-being Health and Environment Data Collection App). The purpose of this app is to enable researchers collect data about your well-being and related factors.",
+  "welcomeText": "Welcome to WHEdcapp (Well-being Health and Environment Data Collection App). In this app, you rate your sense of well-being, home, safety and loneliness over time on a scale from 0 to 10. The purpose of this app is be able to follow and collect data about your sense of well-being and related factors.",
   "@welcomeText": {
     "description": "Welcome text"
   },

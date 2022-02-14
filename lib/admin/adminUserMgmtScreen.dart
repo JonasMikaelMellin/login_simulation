@@ -1,3 +1,16 @@
+/*
+This file is part of Whedcapp - standalone.
+
+Whedcapp is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation,
+either version 3 of the License, or (at your option) any later version.
+
+Whedcapp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with Foobar. If not, see <https://www.gnu.org/licenses/>.
+*/
+
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
@@ -36,87 +49,94 @@ class _AdminUserMgmtScreenState extends State<AdminUserMgmtScreen> {
       appBar: defaultAppBar(context,AppLocalizations.of(context)!.adminUserMgmtScreenTitle),
       body: Column(
         children: [SizedBox(
-          height: MediaQuery.of(context).size.height*0.8,
-          child: FutureBuilder(
-            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-              if (snapshot.connectionState != ConnectionState.done ||
-                  snapshot.hasData == null || snapshot.hasError) {
-                return Container(
-                    child: Center(child: Text('No users in the database yet')));
-              }
-              List<UserInfo> users = snapshot.data;
-              return ListView.builder(
-                padding: EdgeInsets.all(8.0),
-                itemCount: users.length+1,
-                itemBuilder: (context,index) {
-                  return index == 0?
-                  Row(children:
-                  [
-                    _buildListColumn(context,
-                        Theme.of(context).textTheme.bodyText1!.fontSize!*AppLocalizations.of(context)!.adminLabelId.toString().length*0.5,
-                        AppLocalizations.of(context)!.adminLabelId),
-                    _buildListColumn(context,Theme.of(context).textTheme.bodyText1!.fontSize!*10,AppLocalizations.of(context)!.adminLabelAlias),
-                    _buildListColumn(context,Theme.of(context).textTheme.bodyText1!.fontSize!*5,AppLocalizations.of(context)!.adminLabelAdmin),
-                    _buildListColumn(context,Theme.of(context).textTheme.bodyText1!.fontSize!*5,AppLocalizations.of(context)!.adminLabelEnabled),
-
-                  ]):Row(
-                      children: [
+          height: MediaQuery.of(context).size.height*0.7,
+          child: Flex(
+            direction: Axis.vertical,
+            children: [Expanded(
+              flex: 1,
+              child: FutureBuilder(
+                builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done ||
+                      snapshot.hasData == null || snapshot.hasError) {
+                    return Container(
+                        child: Center(child: Text('No users in the database yet')));
+                  }
+                  List<UserInfo> users = snapshot.data;
+                  return ListView.builder(
+                    padding: EdgeInsets.all(8.0),
+                    itemCount: users.length+1,
+                    itemBuilder: (context,index) {
+                      return index == 0?
+                      Row(children:
+                      [
                         _buildListColumn(context,
-                            Theme.of(context).textTheme.bodyText1!.fontSize!*AppLocalizations.of(context)!.adminLabelId.toString().length*0.5
-                            ,users[index-1].id),
-                        _buildListColumn(context,Theme.of(context).textTheme.bodyText1!.fontSize!*10,users[index-1].alias),
-                        _buildListColumn(context,Theme.of(context).textTheme.bodyText1!.fontSize!*5,users[index-1].admin),
-                        _buildListColumn(context,Theme.of(context).textTheme.bodyText1!.fontSize!*5,users[index-1].enabled),
-                        index > 2 ? GestureDetector(
-                          onTap: () {
-                            _navigateToConfirmDeleteUser(context,users[index-1]);
-                            setState(() {});
-                          },
+                            Theme.of(context).textTheme.bodyText1!.fontSize!*AppLocalizations.of(context)!.adminLabelId.toString().length*0.5,
+                            AppLocalizations.of(context)!.adminLabelId),
+                        _buildListColumn(context,Theme.of(context).textTheme.bodyText1!.fontSize!*10,AppLocalizations.of(context)!.adminLabelAlias),
+                        _buildListColumn(context,Theme.of(context).textTheme.bodyText1!.fontSize!*5,AppLocalizations.of(context)!.adminLabelAdmin),
+                        _buildListColumn(context,Theme.of(context).textTheme.bodyText1!.fontSize!*5,AppLocalizations.of(context)!.adminLabelEnabled),
 
-                          child: Icon(Icons.delete),
-                        ) : SizedBox(width:25.0,child: Text(' ')),
-                        GestureDetector(
-                          onTap: () {
-                            _navigateToUpdateUser(context,users[index-1]);
-                            setState((){});
-                          },
-                          child: Icon(Icons.edit)
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            _navigateToViewUser(context,users[index-1]);
-                            setState((){});
-                          },
-                          child: Icon(Icons.visibility)
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            var result = Navigator.pushNamed(context, AdminChangePasswordScreen.route,arguments: AdminChangePasswordArgReq(user: users[index-1]));
-                            result.then((v){
-                              if (v != null) {
-                                final u = users[index-1];
-                                var nu = UserInfo(
-                                  id: u.id,
-                                  alias: u.alias,
-                                  hashedPassword: (v as AdminChangePasswordArgRep).hashedPassword,
-                                  admin: u.admin,
-                                  enabled: u.enabled
-                                );
-                                setState(() {
-                                  updateUser(nu);
+                      ]):Row(
+                          children: [
+                            _buildListColumn(context,
+                                Theme.of(context).textTheme.bodyText1!.fontSize!*AppLocalizations.of(context)!.adminLabelId.toString().length*0.5
+                                ,users[index-1].id),
+                            _buildListColumn(context,Theme.of(context).textTheme.bodyText1!.fontSize!*10,users[index-1].alias),
+                            _buildListColumn(context,Theme.of(context).textTheme.bodyText1!.fontSize!*5,users[index-1].admin),
+                            _buildListColumn(context,Theme.of(context).textTheme.bodyText1!.fontSize!*5,users[index-1].enabled),
+                            index > 2 ? GestureDetector(
+                              onTap: () {
+                                _navigateToConfirmDeleteUser(context,users[index-1]);
+                                setState(() {});
+                              },
+
+                              child: Icon(Icons.delete),
+                            ) : SizedBox(width:25.0,child: Text(' ')),
+                            GestureDetector(
+                              onTap: () {
+                                _navigateToUpdateUser(context,users[index-1]);
+                                setState((){});
+                              },
+                              child: Icon(Icons.edit)
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                _navigateToViewUser(context,users[index-1]);
+                                setState((){});
+                              },
+                              child: Icon(Icons.visibility)
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                var result = Navigator.pushNamed(context, AdminChangePasswordScreen.route,arguments: AdminChangePasswordArgReq(user: users[index-1]));
+                                result.then((v){
+                                  if (v != null) {
+                                    final u = users[index-1];
+                                    var nu = UserInfo(
+                                      id: u.id,
+                                      alias: u.alias,
+                                      hashedPassword: (v as AdminChangePasswordArgRep).hashedPassword,
+                                      admin: u.admin,
+                                      enabled: u.enabled
+                                    );
+                                    setState(() {
+                                      updateUser(nu);
+                                    });
+                                  }
                                 });
-                              }
-                            });
-                          },
-                          child: Icon(Icons.change_circle)
-                        )
-                      ]
+                              },
+                              child: Icon(Icons.change_circle)
+                            )
+                          ]
+                      );
+                    }
                   );
-                }
-              );
-            },
-            future: users()
+                },
+                future: users()
 
+              ),
+            ),
+      ]
           ),
         ),
           ElevatedButton(

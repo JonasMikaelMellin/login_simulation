@@ -1,3 +1,16 @@
+/*
+This file is part of Whedcapp - standalone.
+
+Whedcapp is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation,
+either version 3 of the License, or (at your option) any later version.
+
+Whedcapp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with Foobar. If not, see <https://www.gnu.org/licenses/>.
+*/
+
 import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
@@ -168,5 +181,14 @@ class _EnterValueState extends State<EnterValue> {
 }
 
 getQuestion(BuildContext context, Series currentSeries) {
-  return AppLocalizations.of(context)!.enterValueQuestion(getSeriesName(context,currentSeries));
+  switch (currentSeries) {
+    case Series.Wellbeing:
+      return AppLocalizations.of(context)!.enterValueQuestionWellBeing;
+    case Series.Loneliness:
+      return AppLocalizations.of(context)!.enterValueQuestionLoneliness;
+    case Series.Safety:
+      return AppLocalizations.of(context)!.enterValueQuestionSafety;
+    case Series.SenseOfHome:
+      return AppLocalizations.of(context)!.enterValueQuestionSenseOfHome;
+  }
 }
