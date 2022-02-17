@@ -46,7 +46,7 @@
   "configurationSelectLanguagePrompt": "Välj gränssnittsspråk",
   "configurationSelectContentLanguagePrompt": "Välj innehållsspråk",
   "configurationTitle": "Whedcappkonfiguration",
-  "editDataNoteScreenTitle": "Whedcapp - Editera anteckningar rörande data",
+  "editDataNoteScreenTitle": "Whedcapp - Anteckningar",
   "enterValueQuestion": "Hur skulle du skatta din känsla av \"{series}\", på en skala 0 (riktigt dåligt) till 10 (riktigt bra)?",
   "enterValueQuestionLoneliness": "Hur skulle du vilja skatta din känsla av ”Ensamhet” på en skala från 0 (ingen) till 10 (värsta tänkbara)?",
   "enterValueQuestionSafety": "Hur skulle du vilja skatta din känsla av ”Trygghet” på en skala från 0 (ingen) till 10 (bästa möjliga)?",

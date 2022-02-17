@@ -198,7 +198,7 @@
   "@configurationTitle": {
     "description": "The title of the configuration screen"
   },
-  "editDataNoteScreenTitle": "Whedcapp - Edit notes concerning data",
+  "editDataNoteScreenTitle": "Whedcapp - Comments",
   "@editDataNoteScreenTitle":  {
     "description": "The title of the screen for editing notes with respect to data items"
   },

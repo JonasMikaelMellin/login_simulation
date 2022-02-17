@@ -47,7 +47,7 @@ class _ColorConfigurationScreenState extends State<ColorConfigurationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: NavDrawer(),
-      appBar: defaultAppBar(context,AppLocalizations.of(context)!.configurationChooseColor(series)),
+      appBar: defaultAppBar(context,AppLocalizations.of(context)!.configurationChooseColor(getSeriesName(context,series))),
       body: _buildColorPicker(context)
 
     );

@@ -34,10 +34,10 @@ class WColor extends ChangeNotifier {
 
 class WColors extends ChangeNotifier {
   Map<Series,WColor> series2color = {
-    Series.Loneliness: WColor(Color(0x80008837)),
-    Series.Wellbeing: WColor(Color(0x807b3294)),
-    Series.Safety: WColor(Color(0x80c2a5cf)),
-    Series.SenseOfHome: WColor(Color(0x80a6dba0))
+    Series.Loneliness: WColor(Color(0xff008837)),
+    Series.Wellbeing: WColor(Color(0xff7b3294)),
+    Series.Safety: WColor(Color(0xffc2a5cf)),
+    Series.SenseOfHome: WColor(Color(0xffa6dba0))
   };
   WColors() {
     var result = colors();
@@ -67,7 +67,7 @@ class User {
 }
 
 enum Series { Wellbeing, SenseOfHome, Safety, Loneliness }
-const Map<Series,int> seriesColor = {Series.Wellbeing: 0x7b3294, Series.SenseOfHome: 0xa6dba0, Series.Safety: 0xc2a5cf, Series.Loneliness: 0x008837 };
+const Map<Series,int> seriesColor = {Series.Wellbeing: 0xff7b3294, Series.SenseOfHome: 0xffa6dba0, Series.Safety: 0xffc2a5cf, Series.Loneliness: 0xff008837 };
 int getSeriesColor(Series series) {
   return ConfigScreen.wcolors.get(series).value;
   return seriesColor[series]!;
@@ -75,7 +75,8 @@ int getSeriesColor(Series series) {
 String getJavascriptSeriesColor(Series series) {
   // Must move alpha to end for JavaScript, sigh
   var color = getSeriesColor(series);
-  return '#'+((color << 8 | color >> 24)&0xffffffff).toRadixString(16).padLeft(6,'0');
+  //return '#'+((color << 8 | color >> 24)&0xffffffff).toRadixString(16).padLeft(6,'0');
+  return '#'+((color << 0 | color >>0)&0xffffff).toRadixString(16).padLeft(6,'0');
 }
 
 String getSeriesName(BuildContext context,Series series) {
