@@ -182,18 +182,8 @@ class _EditDataNotesScreenState extends State<EditDataNotesScreen> {
 
   Widget _buildEditDataNoteScreen(BuildContext context) {
     return Scaffold(
-      //TODO: Use defaultAppBar
-        appBar: AppBar(
-            title: Text(AppLocalizations.of(context)!.editDataNoteScreenTitle),
-            actions: <Widget>[
-              Padding(
-                  padding: EdgeInsets.only(right: 20.0),
-                  child: GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, '/config');
-                      },
-                      child: Icon(Icons.settings, size: 26.0)))
-            ]),
+        appBar: defaultAppBar(context, AppLocalizations.of(context)!.editDataNoteScreenTitle),
+
         body: _buildEditDataNoteBody(context));
   }
 
@@ -221,49 +211,52 @@ class _EditDataNotesScreenState extends State<EditDataNotesScreen> {
         lst.add(NoteItem(note: note, series: series));
       }
     }
-    return SizedBox(
+    return Container(
       height: MediaQuery.of(context).size.height*0.8,
-      child: Flexible(
-          child: ListView.builder(
-              itemCount: lst.length,
-              itemBuilder: (context, index) {
-                if (lst[index] is SeriesListItem ||
-                    context
-                        .read<ShowSeriesModel>()
-                        .getShowSeries(lst[index].series)) {
-                  return ListTile(
-                    title: lst[index].buildTitle(context),
-                    trailing: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          data.series2datum[lst[index].series]!.information
-                                          .length >
-                                      0 &&
-                                  lst[index] is SeriesListItem
-                              ? Icon(Icons.more_horiz)
-                              : SizedBox.shrink(),
-                          lst[index].buildEditButton(context, true, () {
-                            this.setState(() {
-                              _navigateToAddDataNoteAndAddData(lst[index].series);
-                            });
-                          }),
-                          lst[index].buildButton(
-                              context,
-                              context
-                                  .read<ShowSeriesModel>()
-                                  .getShowSeries(lst[index].series), () {
-                            var ssm = context.read<ShowSeriesModel>();
-                            ssm.setShowSeries(lst[index].series,
-                                !ssm.getShowSeries(lst[index].series));
-                          }),
-                        ]),
-                    tileColor: lst[index].getColor(),
-                  );
-                } else {
-                  return SizedBox.shrink();
-                }
-              })),
+      child: Flex(
+        direction: Axis.vertical,
+        children: [Flexible(
+            child: ListView.builder(
+                itemCount: lst.length,
+                itemBuilder: (context, index) {
+                  if (lst[index] is SeriesListItem ||
+                      context
+                          .read<ShowSeriesModel>()
+                          .getShowSeries(lst[index].series)) {
+                    return ListTile(
+                      title: lst[index].buildTitle(context),
+                      trailing: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            data.series2datum[lst[index].series]!.information
+                                            .length >
+                                        0 &&
+                                    lst[index] is SeriesListItem
+                                ? Icon(Icons.more_horiz)
+                                : SizedBox.shrink(),
+                            lst[index].buildEditButton(context, true, () {
+                              this.setState(() {
+                                _navigateToAddDataNoteAndAddData(lst[index].series);
+                              });
+                            }),
+                            lst[index].buildButton(
+                                context,
+                                context
+                                    .read<ShowSeriesModel>()
+                                    .getShowSeries(lst[index].series), () {
+                              var ssm = context.read<ShowSeriesModel>();
+                              ssm.setShowSeries(lst[index].series,
+                                  !ssm.getShowSeries(lst[index].series));
+                            }),
+                          ]),
+                      tileColor: lst[index].getColor(),
+                    );
+                  } else {
+                    return SizedBox.shrink();
+                  }
+                }))],
+      )
     );
   }
 

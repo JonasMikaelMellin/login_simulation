@@ -53,7 +53,7 @@ class WColors extends ChangeNotifier {
     notifyListeners();
   }
   Color get(Series series) {
-    return series2color![series]!.color;
+    return series2color[series]!.color;
   }
 }
 
@@ -156,7 +156,7 @@ class Chosen extends ChangeNotifier {
     Series.values.forEach((s) => this.chosen[s] = map[s] == null ? -1 : map[s]!);
   }
   void setMap(Map<Series,int?> map) {
-    Series.values.forEach((s) => this.chosen[s] = map![s]!);
+    Series.values.forEach((s) => this.chosen[s] = map[s]!);
   }
   Map<Series,int> getMap() {
     return this.chosen;

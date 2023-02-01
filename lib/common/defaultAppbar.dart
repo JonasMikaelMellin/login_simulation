@@ -20,6 +20,14 @@ AppBar defaultAppBar(BuildContext context, String title) {
   return AppBar(
     title: Text(title),
     actions: <Widget>[
+      Image(
+        width: 200,
+        image: AssetImage('assets/image001.png'),
+      ),
+      Image(
+        width: 100,
+        image: AssetImage('assets/image002.png'),
+      ),
       Padding(
         padding: EdgeInsets.only(right:20.0),
         child: GestureDetector(

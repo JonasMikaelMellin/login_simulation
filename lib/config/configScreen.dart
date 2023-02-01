@@ -13,6 +13,7 @@ You should have received a copy of the GNU General Public License along with Foo
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:login_simulation/common/defaultAppbar.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -70,8 +71,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            title: Text(AppLocalizations.of(context)!.configurationTitle)),
+        appBar: defaultAppBar(context, AppLocalizations.of(context)!.configurationTitle),
         body: _buildProvider(context));
   }
   Widget _buildProvider(BuildContext context) {
@@ -171,7 +171,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
             ]
         ),
         onPressed: () {
-          var result = Navigator.pushNamed(context,ColorConfigurationScreen.route,arguments: ColorConfigurationArgReq(series: series, color: ConfigScreen.wcolors.get(series)!.value));
+          var result = Navigator.pushNamed(context,ColorConfigurationScreen.route,arguments: ColorConfigurationArgReq(series: series, color: ConfigScreen.wcolors.get(series).value));
           result.then((colorConfigurationArgRep) {
             if (colorConfigurationArgRep != null) {
               setState(() {

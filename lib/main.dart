@@ -114,7 +114,7 @@ class Auth {
         }
       }
       if (sha512.convert(utf8.encode(password)).toString() ==
-          potUser!.hashedPassword) {
+          potUser.hashedPassword) {
         return true;
       }
       return false;
@@ -220,7 +220,15 @@ class _LoginStateState extends State<LoginState> {
                 children: <Widget>[
                   _buildLoginTextField(context),
                   _buildPasswordTextField(context),
-                  _buildButtons(context)
+                  _buildButtons(context),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                      Image(width: MediaQuery.of(context).size.width/3,height: 300, image: AssetImage('assets/image001.png')),
+                      Image(width: MediaQuery.of(context).size.width/3,height: 80, image: AssetImage('assets/image002.png'))
+                    ]
+                  )
                 ])));
   }
 
